@@ -1,16 +1,16 @@
-# Integration Guide: HIN SIGN E-REZEPT
+# Integration Guide: HIN Sign Rezept Signatur
 
-## 1. HIN Sign eRezept
+## 1. HIN Sign Rezept Signatur
 
 **Das sichere digitale Rezept für das Schweizer Gesundheitswesen**
 
-Mit dem HIN Sign eRezept können Ärztinnen und Ärzte digitale Rezepte ausstellen – einfach und gesetzeskonform. Apotheken können diese dank QR-Code automatisch erfassen und entwerten. Das macht die Abläufe in Praxis und Apotheke sicherer und effizienter. Das eRezept ist eine Funktion von HIN Sign. Die Nutzung des Services ist an eine HIN Mitgliedschaft gebunden.
+Mit der HIN Sign Rezept Signatur können Ärztinnen und Ärzte digitale Rezepte ausstellen – einfach und gesetzeskonform. Apotheken können diese dank QR-Code automatisch erfassen und entwerten. Das macht die Abläufe in Praxis und Apotheke sicherer und effizienter. Die HIN Sign Rezept Signatur ist eine Funktion von HIN Sign. Die Nutzung des Services ist an eine HIN Mitgliedschaft gebunden.
 
 ![eRezept Erklärungsskizze](./assets/eRezept-Erklaerungsskizze.jpeg)
 
 **Anwendungsfälle**
 
-Der HIN Sign eRezept Service umfasst folgende Anwendungsfälle für Ärzte und Apotheker:
+Der HIN Sign Rezept Signatur Service umfasst folgende Anwendungsfälle für Ärzte und Apotheker:
 
 * Signieren von eRezepten
 * Verifizieren von eRezepten
@@ -22,13 +22,13 @@ Der HIN Sign eRezept Service umfasst folgende Anwendungsfälle für Ärzte und A
 
 **eRezept als Teil von HIN Sign**
 
-Das HIN Sign eRezept ist vollständig Teil des HIN Sign Service und wird deshalb über die gleiche Integration angebunden.
+Die HIN Sign Rezept Signatur ist vollständig Teil des HIN Sign Service und wird deshalb über die gleiche Integration angebunden.
 Die technische Anbindung erfolgt somit einmalig über die gleiche Komponente und die Integration kann wahlweise vollumfänglich oder nur teilweise genutzt werden.
 
 Dies bedeutet für integrierende Parteien, dass
 
-* eine - bestehende oder neue - HIN Sign Integration direkt  auch für die eRezept Funktionen genutzt werden kann.
-* eine - bestehende oder neue - HIN Sign eRezept Integration direkt auch für das Signieren von Dokumenten durch HIN Sign genutzt werden kann.
+* eine - bestehende oder neue - HIN Sign Integration direkt auch für die eRezept Funktionen genutzt werden kann.
+* eine - bestehende oder neue - HIN Sign Rezept Signatur Integration direkt auch für das Signieren von Dokumenten durch HIN Sign genutzt werden kann.
 
 Zusätzlich zu den hier beschriebenen eRezept Funktionalitäten kommt HIN Sign bei allen Dokumenten zum Einsatz, bei denen eine Unterschrift üblich ist, aber das Gesetz keine handschriftliche Form vorschreibt.
 
@@ -38,9 +38,9 @@ Zusätzlich zu den hier beschriebenen eRezept Funktionalitäten kommt HIN Sign b
 * Klinische Befunde
 * Formulare
 
-## 2. eRezept QR Code Spezifikation
+## 2. HIN Sign Rezept Signatur QR Code Spezifikation
 
-Der eRezept QR Code soll die Rezeptdaten in maschinenlesbarer Form sowie eine elektronische Signatur beinhalten. Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert.
+Der HIN Sign Rezept Signatur QR Code soll die Rezeptdaten in maschinenlesbarer Form sowie eine elektronische Signatur beinhalten. Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert.
 
 Der QR Code beinhaltet:
 
@@ -357,7 +357,7 @@ Use Case 11: Komplexes Rezept
 Im Appendix ist ein [Beispiel Anwendungsfall mit Entwertungen](#B-Beispiel-Anwendungsfall-mit-Entwertungen) detailliert beschrieben.
 
 
-## 3. Integration des HIN Sign eRezept Service
+## 3. Integration des HIN Sign Rezept Signatur Service
 
 ### 3.1 Architektur
 
@@ -367,7 +367,7 @@ Ausstellersysteme (PIS/KIS) integrieren HIN Sign gemäss folgendem Schema über 
 
 ### 3.2 Authentisierung und Autorisierung
 
-Für die verschiedenen Funktionen des HIN Sign eRezept Service bestehen unterschiedliche Anforderungen betreffend der Stärke der Authentisierung und der erforderlichen Autorisierung.
+Für die verschiedenen Funktionen des HIN Sign Rezept Signatur Service bestehen unterschiedliche Anforderungen betreffend der Stärke der Authentisierung und der erforderlichen Autorisierung.
 
 **Übersicht**
 
@@ -447,13 +447,13 @@ OAuth via HIN ACS
 Hinweis zur Authentisierung mit “Persönliche HIN eID mit Härtung 20”:
 Diese Authentisierung wird über den HIN / ADSwiss Auth-Service abgewickelt, welcher sicherstellt dass es sich beim Nutzer um einen korrekt identifizierte und zeitnah authentisierte Person handelt (wird nur auf Prod sichergestellt). HIN Sign stellt zudem über den Person Code sicher dass es sich um eine Gesundheitspersonal handelt.
 
-**EPDG Authentisierung**
+**EPD Authentisierung**
 Die Ausstellung von eRezepten erfordert die Authentifizierung nach EPD-Level.
 Dazu wird der HIN/ADSwiss Auth-Service gemäss folgendem Ablaufdiagramm verwendet:
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
-## 4. HIN Sign API für eRezept
+## 4. HIN Sign API für Rezept Signatur
 
 ### 4.1. Introduction
 
@@ -993,7 +993,7 @@ A complete example commands incl. authentication can be found in [Appendix A](#A
 ENABLE_EPRESCRIPTION=true certifaction server --api https://api.testnet.certifaction.io --hin-api https://oauth2.sign-test.hin.ch/api
 ```
 
-#### EPDG Authentication
+#### EPD Authentication
 
 ##### Required Secrets:
 * A HIN Account
@@ -1064,7 +1064,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	Option 1: Output as Data/URL
 
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer <epdg_token>" http://localhost:8082/ePrescription/create?output-format=data
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer <epd_token>" http://localhost:8082/ePrescription/create?output-format=data
 
 	HTTP/200 OK
 		{"SignedPrescriptionData":"https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101"}
@@ -1072,7 +1072,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 	Option 2:  Output as PNG QR Code
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer &lt;epdg_token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer &lt;epd_token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
 
 	HTTP/200 OK
 	```
@@ -1094,7 +1094,7 @@ HTTP/200 OK
 3. Revoke ePrescription
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <epdg_token>" http://localhost:8082/ePrescription/revoke/00000000-0000-0000-0000-000000000000
+$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <epd_token>" http://localhost:8082/ePrescription/revoke/00000000-0000-0000-0000-000000000000
 
 HTTP/200 OK
 ```
