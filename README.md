@@ -171,7 +171,7 @@ Zu beachten ist, dass im Audit Log keinerlei Daten aus dem eRezept, abgesehen vo
 
 ### 2.8. Entwertung und Revokation
 
-Um die Revokation und Entwertung von Medikamenten zu erfassen wird zu einem eRezept eine Liste von Events geführt die dessen Lebenszyklus abbilden.
+Um die Revokation und Abgabe von Medikamenten zu erfassen wird zu einem eRezept eine Liste von Events geführt die dessen Lebenszyklus abbilden.
 
 #### 2.8.1. Events
 
