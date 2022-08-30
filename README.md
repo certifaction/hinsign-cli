@@ -701,35 +701,33 @@ The verification information consists of the following information:
 
 ```
 {
-   "prescription_id":"00000000-1113-1112-0000-123000007747",
+   "prescription_id":"00000000-0000-0000-0000-000000000000",
+   "issued_at":"0000-00-00T00:00:00+00:00",
+   "issued_by":"Dr. Test Test 1 (test1)",
    "valid":true,
    "revoked":true,
-   "revoked_at":"2022-03-31T18:02:26.665984779Z",
-   "revoked_by":"HIN|ememos1",
+   "revoked_at":"0000-00-00T00:00:00.000000000Z",
+   "revoked_by":"HIN|test1",
    "dispensed":true,
    "dispensed_at":"2022-04-06T13:57:48.734874284Z",
-   "dispensed_by":"HIN|stebal1",
+   "dispensed_by":"HIN|test2",
    "events":[
       {
-         "id":"df0c44b8-b9d6-459f-aa0c-73562cd9988e",
+         "id":"00000000-0000-0000-0000-000000000000",
          "type":"revoke",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-03-31T18:02:26.665984779Z",
-         "actor":"HIN|ememos1"
+         "reference":"00000000-0000-0000-0000-000000000000",
+	 "event_data":{},
+         "timestamp":"0000-00-00T00:00:00.000000000Z",
+         "actor":"test1",
+	 "actor_name":"Dr. Test Test 1"
       },
       {
-         "id":"0f69b227-3d0a-4da5-98b5-2836008ca0bd",
+         "id":"00000000-0000-0000-0000-000000000000",
          "type":"full_dispense",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-04-06T13:55:55.950253533Z",
-         "actor":"HIN|stebal1"
-      },
-      {
-         "id":"bdb0eafa-4ed2-4e8e-9b5e-1e85ed1183bc",
-         "type":"full_dispense",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-04-06T13:57:48.734874284Z",
-         "actor":"HIN|stebal1"
+         "reference":"00000000-0000-0000-0000-000000000000",
+         "timestamp":"0000-00-00T00:00:00.000000000Z",
+         "actor":"test2",
+	 "actor_name":"Dr. Test Test 2"
       }
    ]
 }
@@ -1105,7 +1103,7 @@ HTTP/200 OK
 {
   "prescriptionId":"00000000-0000-0000-0000-000000000000",
   "issued_at":"0000-00-00T00:00:00+00:00",
-  "issued_by":"Dr. Test Test (Test1)",
+  "issued_by":"Dr. Test Test 1 (Test1)",
   "valid":true,
   "revoked":false,
   "dispensed":false
@@ -1140,11 +1138,11 @@ HTTP/200 OK
 {
   "prescriptionId":"00000000-0000-0000-0000-000000000000",
   "issued_at":"0000-00-00T00:00:00+00:00",
-  "issued_by":"Dr. Test Test (Test1)",
+  "issued_by":"Dr. Test Test 1 (Test1)",
   "valid":true,
   "revoked":true,
   "revoked_at":"0000-00-00T00:00:00.000000000Z",
-  "revoked_by":"Test1",
+  "revoked_by":"HIN|test1",
   "dispensed":false,
   "events":[
     {
@@ -1153,8 +1151,8 @@ HTTP/200 OK
       "reference":"00000000-0000-0000-0000-000000000000",
       "event_data":{},
       "timestamp":"0000-00-00T00:00:00.000000000Z",
-      "actor":"Test1",
-      "actor_name":"Dr. Test Test"
+      "actor":"test1",
+      "actor_name":"Dr. Test Test 1"
     }
   ]
 }
