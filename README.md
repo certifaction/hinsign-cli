@@ -705,22 +705,11 @@ The verification information consists of the following information:
    "issued_at":"0000-00-00T00:00:00+00:00",
    "issued_by":"Dr. Test Test 1 (test1)",
    "valid":true,
-   "revoked":true,
-   "revoked_at":"0000-00-00T00:00:00.000000000Z",
-   "revoked_by":"HIN|test1",
+   "revoked":false,
    "dispensed":true,
    "dispensed_at":"0000-00-00T00:00:00.000000000Z",
    "dispensed_by":"HIN|pharma1",
    "events":[
-      {
-         "id":"00000000-0000-0000-0000-000000000000",
-         "type":"revoke",
-         "reference":"00000000-0000-0000-0000-000000000000",
-	 "event_data":{},
-         "timestamp":"0000-00-00T00:00:00.000000000Z",
-         "actor":"test1",
-	 "actor_name":"Dr. Test Test 1"
-      },
       {
          "id":"00000000-0000-0000-0000-000000000000",
          "type":"full_dispense",
