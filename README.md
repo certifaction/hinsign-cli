@@ -1099,17 +1099,7 @@ HTTP/200 OK
 }
 ```
 
-3. Revoke ePrescription
-
-```
-$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <epd_token>" http://localhost:8082/ePrescription/revoke/00000000-0000-0000-0000-000000000000
-
-HTTP/200 OK
-```
-
-
-
-4. Dispense ePrescription fully
+3. Dispense ePrescription fully
 
 ```
 $ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <hin_acs_oauth_token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
@@ -1117,9 +1107,7 @@ $ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <hi
 HTTP/200 OK
 ```
 
-
-
-5. Verify ePrescription
+4. Verify ePrescription
 
 ```
 $ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
