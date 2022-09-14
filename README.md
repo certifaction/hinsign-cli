@@ -30,7 +30,7 @@ Dies bedeutet für integrierende Parteien, dass
 * eine - bestehende oder neue - HIN Sign Integration direkt auch für die eRezept Funktionen genutzt werden kann.
 * eine - bestehende oder neue - HIN Sign Rezept Signatur Integration direkt auch für das Signieren von Dokumenten durch HIN Sign genutzt werden kann.
 
-Zusätzlich zu den hier beschriebenen eRezept Funktionalitäten kommt HIN Sign bei allen Dokumenten zum Einsatz, bei denen eine Unterschrift üblich ist, aber das Gesetz keine handschriftliche Form vorschreibt.
+Zusätzlich zu den hier beschriebenen eRezept Funktionalitäten kommt HIN Sign bei allen Dokumenten zum Einsatz, bei denen eine Unterschrift üblich ist, aber das Gesetz keine handschriftliche Form vorschreibt. Beispiele:
 
 * Rezepte und Verordnungen (Ausnahme: Betäubungsmittel-Rezept)
 * Arbeitsunfähigkeitszeugnisse
@@ -64,7 +64,7 @@ Applikationen die den QR Code einlesen, können diesen direkt für die Verifikat
 
 ### 2.2. QR Code Link
 
-Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert. Dazu wird eine neue separate Domaine registriert.
+Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert. Dazu wird eine neue separate Domäne registriert.
 
 Beispiel:
 
@@ -125,7 +125,6 @@ Zu beachten ist, dass im Audit Log keinerlei Daten aus dem eRezept, abgesehen vo
 
 ### 2.7. Regeln
 
-
 <table valign="top">
   <tr>
    <td><strong>Funktion</strong>
@@ -148,7 +147,7 @@ Zu beachten ist, dass im Audit Log keinerlei Daten aus dem eRezept, abgesehen vo
   <tr valign="top">
    <td>Entwerten
    </td>
-   <td>CHMED16 eRezept ID muss existieren
+   <td>CHMED16 eRezept ID muss existieren<br>CHMED16 eRezept ID darf nicht revoziert sein<br>Falls die CHMED16 eRezept ID vollständig entwertet wurde, müssen weitere Entwertungen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>)
    </td>
   </tr>
   <tr valign="top">
@@ -172,7 +171,7 @@ Zu beachten ist, dass im Audit Log keinerlei Daten aus dem eRezept, abgesehen vo
 
 ### 2.8. Entwertung und Revokation
 
-Um die Revokation und Ausgabe von Medikamenten zu erfassen wird zu einem eRezept eine Liste von Events geführt die dessen Lebenszyklus abbilden.
+Um die Revokation und Abgabe von Medikamenten zu erfassen wird zu einem eRezept eine Liste von Events geführt die dessen Lebenszyklus abbilden.
 
 #### 2.8.1. Events
 
@@ -181,19 +180,19 @@ Um die Revokation und Ausgabe von Medikamenten zu erfassen wird zu einem eRezept
   <tr>
    <td>Revozierung
    </td>
-   <td>Das eRezept wird für ungültig erklärt und ist nicht mehr gültig. Hat nichts mit Entwertungen zu tun und sollte nur bei fälschlicherweise ausgestellten eRezepten verwendet werden.
+   <td>Das eRezept wird für ungültig erklärt und ist nicht mehr gültig. Dies hat nichts mit Entwertungen zu tun und sollte nur bei fälschlicherweise ausgestellten eRezepten verwendet werden.
    </td>
   </tr>
   <tr>
    <td>Teil-Entwertung
    </td>
-   <td>Für ein oder mehrere Medikamente im eRezept werden Teil-Ausgaben erfasst. Das eRezept ist weiterhin für den Rest gültig.
+   <td>Für ein oder mehrere Medikamente im eRezept werden Teil-Abgaben erfasst. Das eRezept ist weiterhin für den Rest gültig. Teil-Entwertungen von revozierten Rezepten sind nicht erlaubt. Weitere Teil-Abgaben bei vollständig entwerteten Rezepten müssen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). Bei forcierten Abgaben liegt die Verantwortung bei den Abgebenden.
    </td>
   </tr>
   <tr>
    <td>Vollständige Entwertung
    </td>
-   <td>Das eRezept resp. sämtliche enthaltenen Medikamente werden als ausgegeben markiert.
+   <td>Das eRezept resp. sämtliche enthaltenen Medikamente werden als abgegeben markiert. Falls alle im Rezept enthaltenen Medikamente via Teil-Entwertung abgegen wurden, muss danach eine vollständige Entwertung gemacht werden (dies geschieht nicht automatisiert). Entwertungen von revozierten Rezepten sind nicht erlaubt. Weitere Abgaben bei vollständig entwerteten Rezepten müssen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). Bei forcierten Abgaben liegt die Verantwortung bei den Abgebenden.
    </td>
   </tr>
   <tr>
@@ -340,7 +339,7 @@ Die Entwertungs-Liste wird in anonymisierter Form (dh. ohne die Inhalte aus dem 
 
 #### 2.8.2. Entwertung Szenarien
 
-Durch die Möglichkeit zur Erfassung von ausgegebenen Medikamenten und der Markierung eines Rezepts als “vollständig entwertet” werden folgende Anwendungsfälle von Rezepten ermöglicht:
+Durch die Möglichkeit zur Erfassung von abgegebenen Medikamenten und der Markierung eines Rezepts als “Vollständig Entwertet” werden die unten aufgeführten Anwendungsfälle ermöglicht. Dies sind Beispiele und decken nicht alle möglichen Anwendungsfälle ab.
 
 Use Case 1: „Einfaches“ Rezept  
 Use Case 2: „Einfaches“ Rezept mit Menge >1  
@@ -445,9 +444,9 @@ OAuth via HIN ACS
 </table>
 
 Hinweis zur Authentisierung mit “Persönliche HIN eID mit Härtung 20”:
-Diese Authentisierung wird über den HIN / ADSwiss Auth-Service abgewickelt, welcher sicherstellt dass es sich beim Nutzer um einen korrekt identifizierte und zeitnah authentisierte Person handelt (wird nur auf Prod sichergestellt). HIN Sign stellt zudem über den Person Code sicher dass es sich um eine Gesundheitspersonal handelt.
+Diese Authentisierung wird über den HIN / ADSwiss Auth-Service abgewickelt, welcher sicherstellt dass es sich beim Nutzer um einen korrekt identifizierte und zeitnah authentisierte Person handelt (wird nur auf Prod sichergestellt). HIN Sign stellt zudem über den Person Code sicher dass es sich um ein Arzt / Ärztin handelt.
 
-**EPD Authentisierung**
+**EPD Authentisierung**<br>
 Die Ausstellung von eRezepten erfordert die Authentifizierung nach EPD-Level.
 Dazu wird der HIN/ADSwiss Auth-Service gemäss folgendem Ablaufdiagramm verwendet:
 
@@ -465,7 +464,7 @@ Please refer to the main documentation for a general description of the Certifac
 
 The ePrescription functionality is available from version v1.0.x and above.
 
-The binary can be downloaded from [https://github.com/certifaction/cli/releases/](https://github.com/certifaction/cli/releases)
+The binary can be downloaded <a href="https://github.com/certifaction/hinsign-cli/releases" target="_blank">here</a>.
 
 #### 4.1.2. How to activate the ePrescription functionality
 
@@ -581,7 +580,7 @@ Yes
    <td><strong>Description</strong>
    </td>
   </tr>
-  <tr  valign="top">
+  <tr valign="top">
    <td>output-format
    </td>
    <td>data or qrcode
@@ -702,35 +701,22 @@ The verification information consists of the following information:
 
 ```
 {
-   "prescription_id":"00000000-1113-1112-0000-123000007747",
+   "prescription_id":"00000000-0000-0000-0000-000000000000",
+   "issued_at":"0000-00-00T00:00:00+00:00",
+   "issued_by":"Dr. Test Test 1 (test1)",
    "valid":true,
-   "revoked":true,
-   "revoked_at":"2022-03-31T18:02:26.665984779Z",
-   "revoked_by":"HIN|ememos1",
+   "revoked":false,
    "dispensed":true,
-   "dispensed_at":"2022-04-06T13:57:48.734874284Z",
-   "dispensed_by":"HIN|stebal1",
+   "dispensed_at":"0000-00-00T00:00:00.000000000Z",
+   "dispensed_by":"HIN|pharma1",
    "events":[
       {
-         "id":"df0c44b8-b9d6-459f-aa0c-73562cd9988e",
-         "type":"revoke",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-03-31T18:02:26.665984779Z",
-         "actor":"HIN|ememos1"
-      },
-      {
-         "id":"0f69b227-3d0a-4da5-98b5-2836008ca0bd",
+         "id":"00000000-0000-0000-0000-000000000000",
          "type":"full_dispense",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-04-06T13:55:55.950253533Z",
-         "actor":"HIN|stebal1"
-      },
-      {
-         "id":"bdb0eafa-4ed2-4e8e-9b5e-1e85ed1183bc",
-         "type":"full_dispense",
-         "reference":"00000000-1113-1112-0000-123000007747",
-         "timestamp":"2022-04-06T13:57:48.734874284Z",
-         "actor":"HIN|stebal1"
+         "reference":"00000000-0000-0000-0000-000000000000",
+         "timestamp":"0000-00-00T00:00:00.000000000Z",
+         "actor":"pharma1",
+	 "actor_name":"Pharmacist 1"
       }
    ]
 }
@@ -789,7 +775,7 @@ POST /ePrescription/dispense/<id>
 ```
 
 **Description**<br>
-Registers a full or partial dispensation for a signed ePrescription
+Registers a full or partial dispensation for a signed ePrescription. Dispensations on revoked ePrescriptions are not allowed. Dispensations on fully dispensed ePrescriptions need to be forced (see below)
 
 **Authenticated**<br>
 Yes
@@ -819,6 +805,14 @@ Yes
    <td>See below
    </td>
    <td>Optional list of Medication dispensation to record a partial dispensation
+   </td>
+  </tr>
+  <tr valign="top">
+   <td>force
+   </td>
+   <td>boolean
+   </td>
+   <td>Optional parameter to force a dispensation if the prescription was fully dispensed
    </td>
   </tr>
 </table>
@@ -868,7 +862,7 @@ The input consists of the following fields:
 ]
 ```
 
-Please check the [section for Dispensation](#27-Entwertung-und-Revokation) for more information about what is stored.
+Please check the [section for Dispensation](#28-Entwertung-und-Revokation) for more information about what is stored.
 
 **Response**
 
@@ -883,6 +877,18 @@ Please check the [section for Dispensation](#27-Entwertung-und-Revokation) for m
    <td>404 Bad Request
    </td>
    <td>Error while recording dispensation event
+   </td>
+  </tr>
+  <tr>
+   <td>403 Forbidden
+   </td>
+   <td>prescription has been revoked
+   </td>
+  </tr>
+  <tr>
+   <td>403 Forbidden
+   </td>
+   <td>prescription has been already fully dispensed
    </td>
   </tr>
 </table>
@@ -1085,6 +1091,8 @@ $ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin
 HTTP/200 OK
 {
   "prescriptionId":"00000000-0000-0000-0000-000000000000",
+  "issued_at":"0000-00-00T00:00:00+00:00",
+  "issued_by":"Dr. Test Test 1 (Test1)",
   "valid":true,
   "revoked":false,
   "dispensed":false
@@ -1118,16 +1126,30 @@ $ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin
 HTTP/200 OK
 {
   "prescriptionId":"00000000-0000-0000-0000-000000000000",
+  "issued_at":"0000-00-00T00:00:00+00:00",
+  "issued_by":"Dr. Test Test 1 (Test1)",
   "valid":true,
   "revoked":true,
-  "revokedBy":"Dr. Test Test",
-  "dispensed":false
+  "revoked_at":"0000-00-00T00:00:00.000000000Z",
+  "revoked_by":"HIN|test1",
+  "dispensed":false,
+  "events":[
+    {
+      "id":"00000000-0000-0000-0000-000000000000",
+      "type":"revoke",
+      "reference":"00000000-0000-0000-0000-000000000000",
+      "event_data":{},
+      "timestamp":"0000-00-00T00:00:00.000000000Z",
+      "actor":"test1",
+      "actor_name":"Dr. Test Test 1"
+    }
+  ]
 }
 ```
 
 ### B. Beispiel Anwendungsfall mit Entwertungen
 
-Im Folgenden wird anhand eines konkreten Use Cases aufgezeigt welche Informationen erfasst werden und wie eine Apotheke diese interpretieren kann um über eine Ausgabe zu entscheiden.
+Im Folgenden wird anhand eines konkreten Use Cases aufgezeigt welche Informationen erfasst werden und wie eine Apotheke diese interpretieren kann um über eine Abgabe zu entscheiden.
 
 Rezept:
 
@@ -1195,7 +1217,7 @@ Rezept:
    </td>
   </tr>
   <tr valign="top">
-   <td>Ausgegeben von
+   <td>Abgegeben von
    </td>
    <td>Apotheke 1
    </td>
@@ -1230,7 +1252,7 @@ Blister 30 Stk)
   <tr valign="top">
    <td>Apotheke 2
    </td>
-   <td>Erfasst Teil-Entwertung und (optional) markiert Rezept als “vollständig” ausgegeben
+   <td>Erfasst Teil-Entwertung und (optional) markiert Rezept als “vollständig” abgegeben
    </td>
    <td>Teil-Entwertung:
 <table>
@@ -1253,7 +1275,7 @@ Blister 30 Stk)
    </td>
   </tr>
   <tr>
-   <td>Ausgegeben von
+   <td>Abgegeben von
    </td>
    <td>Apotheke 2
    </td>
@@ -1309,7 +1331,7 @@ Vollständige Entwertung:
 </table>
 
 
-Analog zu diesem Beispiel können für sämtliche oben aufgeführten Use Cases die Medikamentenausgaben als Entwertungen erfasst werden um den Apotheken die Informationen zu liefern die Sie brauchen um über eine weitere Ausgabe zu entscheiden.
+Analog zu diesem Beispiel können für sämtliche oben aufgeführten Use Cases die Medikamentenabgaben als Entwertungen erfasst werden um den Apotheken die Informationen zu liefern die Sie brauchen um über eine weitere Abgabe zu entscheiden.
 
 ### C. Beispiele Input- und Outputdaten
 
