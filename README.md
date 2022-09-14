@@ -1073,7 +1073,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer <epd_token>" http://localhost:8082/ePrescription/create?output-format=data
 
 	HTTP/200 OK
-		{"SignedPrescriptionData":"https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101"}
+		{"SignedPrescriptionData":"https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101"}
 	```
 
 	Option 2:  Output as PNG QR Code
@@ -1086,7 +1086,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 2. Verify ePrescription
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
+$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
 
 HTTP/200 OK
 {
@@ -1110,28 +1110,27 @@ HTTP/200 OK
 4. Verify ePrescription
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
+$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
 HTTP/200 OK
 {
-  "prescriptionId":"00000000-0000-0000-0000-000000000000",
-  "issued_at":"0000-00-00T00:00:00+00:00",
-  "issued_by":"Dr. Test Test 1 (Test1)",
-  "valid":true,
-  "revoked":true,
-  "revoked_at":"0000-00-00T00:00:00.000000000Z",
-  "revoked_by":"HIN|test1",
-  "dispensed":false,
-  "events":[
-    {
-      "id":"00000000-0000-0000-0000-000000000000",
-      "type":"revoke",
-      "reference":"00000000-0000-0000-0000-000000000000",
-      "event_data":{},
-      "timestamp":"0000-00-00T00:00:00.000000000Z",
-      "actor":"test1",
-      "actor_name":"Dr. Test Test 1"
-    }
-  ]
+   "prescription_id":"00000000-0000-0000-0000-000000000000",
+   "issued_at":"0000-00-00T00:00:00+00:00",
+   "issued_by":"Dr. Test Test 1 (test1)",
+   "valid":true,
+   "revoked":false,
+   "dispensed":true,
+   "dispensed_at":"0000-00-00T00:00:00.000000000Z",
+   "dispensed_by":"HIN|pharma1",
+   "events":[
+      {
+         "id":"00000000-0000-0000-0000-000000000000",
+         "type":"full_dispense",
+         "reference":"00000000-0000-0000-0000-000000000000",
+         "timestamp":"0000-00-00T00:00:00.000000000Z",
+         "actor":"pharma1",
+	 "actor_name":"Pharmacist 1"
+      }
+   ]
 }
 ```
 
