@@ -709,8 +709,8 @@ The verification information consists of the following information:
    "revoked_at":"0000-00-00T00:00:00.000000000Z",
    "revoked_by":"HIN|test1",
    "dispensed":true,
-   "dispensed_at":"2022-04-06T13:57:48.734874284Z",
-   "dispensed_by":"HIN|test2",
+   "dispensed_at":"0000-00-00T00:00:00.000000000Z",
+   "dispensed_by":"HIN|pharma1",
    "events":[
       {
          "id":"00000000-0000-0000-0000-000000000000",
@@ -726,8 +726,8 @@ The verification information consists of the following information:
          "type":"full_dispense",
          "reference":"00000000-0000-0000-0000-000000000000",
          "timestamp":"0000-00-00T00:00:00.000000000Z",
-         "actor":"test2",
-	 "actor_name":"Dr. Test Test 2"
+         "actor":"pharma1",
+	 "actor_name":"Pharmacist 1"
       }
    ]
 }
