@@ -935,7 +935,7 @@ Then post the ePrescription data to the /ePrescription/create endpoint as follow
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <access token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
-A complete example commands incl. authentication can be found in [Appendix A](#a-eprescription-authentication-and-ase-case-Commands).
+A complete example commands incl. authentication can be found in [Appendix A](#a-eprescription-authentication-and-use-case-commands).
 
 ## Appendix
 
