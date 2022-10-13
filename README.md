@@ -810,7 +810,7 @@ The input consists of the following fields:
 ]
 ```
 
-Please check the [event data section](#26-event-data) for more information about what data is stored.
+Please check the [event data section](#262-event-data) for more information about what data is stored.
 
 **Response**
 
