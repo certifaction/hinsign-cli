@@ -441,7 +441,8 @@ Please refer to the main documentation for the list of all available global flag
 
 #### 4.1.5. Authentication
 
-Please see chapter [Authentication and Authorisation](#32-authentication-and-authorisation)<br>
+Please see chapter [Authentication and Authorisation](#32-authentication-and-authorisation).<br>
+
 When indicated, the requests must be authenticated using the Authorization header as following (an environment is provided for testing that does not enforce authentication):
 
 HTTP Server Mode:
