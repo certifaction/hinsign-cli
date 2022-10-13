@@ -60,7 +60,7 @@ Applications that want to verify the ePrescription can do so by using the link i
 https://eprescription.hin.ch/#CHMED16A1...AA==&q07lE0g4asrIIR9mdBgSIHUVsf9k9QIF+74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601&i=FirstName%20Surname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-The ePrescription data is located in the link in the QR code between the "#" and the "&". It is based on the [CHMED16A specification](https://drive.google.com/file/d/1sBUEHx86ya8TJUbNSbzJNcaWSLTHtONn/view). Because the link should be as short as possible, only the compressed variant CHMED16A1 should be used.
+The ePrescription data is located in the link in the QR code between the "#" and the "&". It is based on the <a href="https://drive.google.com/file/d/1sBUEHx86ya8TJUbNSbzJNcaWSLTHtONn/view" target="_blank">CHMED16A specification</a>. Because the link should be as short as possible, only the compressed variant CHMED16A1 should be used.
 
 ### 2.2. QR code signature
 
