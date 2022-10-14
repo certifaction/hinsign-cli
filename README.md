@@ -553,7 +553,7 @@ Yes
    </td>
    <td>
    </td>
-   <td>Can be used with the --output-format qrcode to indicate the size of the resulting QR Code in pixels. Optional
+   <td>Can be used with the --output-format qrcode to indicate the size of the resulting QR Code in pixels (optional)
    </td>
   </tr>
 </table>
