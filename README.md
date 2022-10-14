@@ -640,7 +640,7 @@ The verification information consists of the following information:
   <tr valign="top">
    <td>Dispensations
    </td>
-   <td>If available, an array containing each Medication with a recorded Dispensation event and a list of those events
+   <td>If available, an array containing each Medicament with a recorded Dispensation event and a list of those events
    </td>
   </tr>
 </table>
@@ -752,7 +752,7 @@ Yes
    </td>
    <td>See below
    </td>
-   <td>Optional list of Medication dispensation to record a partial dispensation
+   <td>Optional list of Medicament dispensation to record a partial dispensation
    </td>
   </tr>
   <tr valign="top">
@@ -767,7 +767,7 @@ Yes
 
 
 **Request Body**<br>
-The request body optionally contains a list of Medication dispensation to record a partial dispensation.
+The request body optionally contains a list of Medicament dispensation to record a partial dispensation.
 
 The input consists of the following fields:
 
@@ -785,7 +785,7 @@ The input consists of the following fields:
    </td>
    <td>string
    </td>
-   <td>The Id of the Medication
+   <td>The Id of the Medicament
    </td>
   </tr>
   <tr>
@@ -1256,7 +1256,7 @@ Full dispense:
   <tr valign="top">
    <td>Pharmacy 3
    </td>
-   <td>Verifies ePrescription and identifies that it has already been fully validated -> Does not dispense medication
+   <td>Verifies ePrescription and identifies that it has already been fully validated -> Does not dispense medicament
       </td>
    <td>
    </td>
