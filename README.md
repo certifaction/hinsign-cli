@@ -1,219 +1,187 @@
-# Integration Guide: HIN Sign Rezept Signatur
 
-## 1. HIN Sign Rezept Signatur
+# Integration guide: HIN Sign ePrescription signature
 
-**Das sichere digitale Rezept für das Schweizer Gesundheitswesen**
+## 1. HIN Sign ePrescription signature
 
-Mit der HIN Sign Rezept Signatur können Ärztinnen und Ärzte digitale Rezepte ausstellen – einfach und gesetzeskonform. Apotheken können diese dank QR-Code automatisch erfassen und entwerten. Das macht die Abläufe in Praxis und Apotheke sicherer und effizienter. Die HIN Sign Rezept Signatur ist eine Funktion von HIN Sign. Die Nutzung des Services ist an eine HIN Mitgliedschaft gebunden.
+**The secure digital ePrescription for the Swiss healthcare sector**
 
-![eRezept Erklärungsskizze](./assets/eRezept-Erklaerungsskizze.jpeg)
+The HIN Sign ePrescription signature enables doctors to issue digital prescriptions – easily and in accordance with the law. The QR code enables pharmacies to record and validate them automatically. This means that processes in doctor's practices and pharmacies are more secure and more efficient. The HIN Sign ePrescription signature is a functionality of HIN Sign. The use of this service is linked to HIN membership.
 
-**Anwendungsfälle**
+![eRezept Erklärungsskizze](./assets/hin-e-rezept-erklaerungsskizze-en-orange.jpg)
 
-Der HIN Sign Rezept Signatur Service umfasst folgende Anwendungsfälle für Ärzte und Apotheker:
+**Use cases**
 
-* Signieren von eRezepten
-* Verifizieren von eRezepten
-* Revozieren von eRezepten
-* (Teil-)Dispensieren von eRezepten
-* Annullieren dieser Aktionen
+The HIN Sign ePrescription signature service includes the following use cases for doctors and pharmacists:
 
-### 1.2. Technische Anbindung durch Integration von HIN Sign
+* Signing ePrescriptions
+* Verifying ePrescriptions
+* Revoking ePrescriptions
+* (Partial) dispensing of ePrescriptions
+* Cancelling these actions
 
-**eRezept als Teil von HIN Sign**
+### 1.2. Integration of the HIN Sign ePrescription signature service
 
-Die HIN Sign Rezept Signatur ist vollständig Teil des HIN Sign Service und wird deshalb über die gleiche Integration angebunden.
-Die technische Anbindung erfolgt somit einmalig über die gleiche Komponente und die Integration kann wahlweise vollumfänglich oder nur teilweise genutzt werden.
+**ePrescription as part of HIN Sign**
 
-Dies bedeutet für integrierende Parteien, dass
+The HIN Sign ePrescription signature is part of the HIN Sign service and is therefore available via the same integration. The component only needs to be integrated once and can be used to sign documents and/or ePrescriptions.
 
-* eine - bestehende oder neue - HIN Sign Integration direkt auch für die eRezept Funktionen genutzt werden kann.
-* eine - bestehende oder neue - HIN Sign Rezept Signatur Integration direkt auch für das Signieren von Dokumenten durch HIN Sign genutzt werden kann.
+For integrators, this means:
 
-Zusätzlich zu den hier beschriebenen eRezept Funktionalitäten kommt HIN Sign bei allen Dokumenten zum Einsatz, bei denen eine Unterschrift üblich ist, aber das Gesetz keine handschriftliche Form vorschreibt. Beispiele:
+* An existing or new "HIN Sign document signature"-integration can also make use of the ePrescription functionality.
+* An existing or new "HIN Sign ePrescription signature"-integration can also be used to sign documents.
 
-* Rezepte und Verordnungen (Ausnahme: Betäubungsmittel-Rezept)
-* Arbeitsunfähigkeitszeugnisse
-* Berichte und Gutachten
-* Klinische Befunde
-* Formulare
+The HIN Sign document signature can be used to sign documents, which don't require a handwritten signature by law. Examples:
 
-## 2. HIN Sign Rezept Signatur QR Code Spezifikation
+* Medical prescriptions (exception: narcotic prescriptions)
+* Certificates of incapacity for work
+* Reports and expert opinions
+* Clinical findings
+* Forms
 
-Der HIN Sign Rezept Signatur QR Code soll die Rezeptdaten in maschinenlesbarer Form sowie eine elektronische Signatur beinhalten. Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert.
+## 2. HIN Sign ePrescription signature: QR code specification
 
-Der QR Code beinhaltet:
+The HIN Sign ePrescription signature QR code contains the ePrescription data in machine-readable form, as well as an electronic signature.
 
-1. Einen Link zur Info-Seite
-2. Die eRezept Daten im CHMED16A1 Format
-3. Die Signatur Daten zur Verifizierung
+The QR Code contains:
 
-![eRezept QRCode URL](./assets/eRezept_QRCode_URL.svg)
+1. A link to the ePrescription information page
+2. The ePrescription data in CHMED16A1 format
+3. The signature data for verification
 
-Durch die Verwendung eines “URL Fragment” im Link wird die Vertraulichkeit der Lösung sichergestellt, sodass die Rezeptdaten ausschliesslich lokal verfügbar sind und keine Daten an einen Server geschickt werden.
+![eRezept QRCode URL](./assets/eRezept_QRCode_URL_EN.svg)
+
+The use of a “URL fragment” in the link ensures that the ePrescription data is only available locally and is not sent to a server.
 
 
-### 2.1. Anweisungen zum Einlesen des signierten QR Code
+### 2.1. ePrescription data in the QR code
 
-Applikationen die den QR Code einlesen, können diesen direkt für die Verifikation der Signatur verwenden. Um danach die Rezeptdaten im CHMED16A1 Format auszulesen, sollten folgende Regeln beachtet werden:
-
-* Ignorieren/Abtrennen der URL im Link
-    * Alles vor dem # muss ignoriert werden um sicherzustellen, dass der Link jederzeit angepasst werden kann
-* Ignorieren/Abtrennen der Signatur
-    * Alles nach dem “&” muss ignoriert werden
-
-### 2.2. QR Code Link
-
-Um das Einlesen über die Smartphone Kamera zu ermöglichen wird es in Form eines Links gespeichert. Dazu wird eine neue separate Domäne registriert.
-
-Beispiel:
-
+Applications that want to verify the ePrescription can do so by using the link in the QR code as the input for the [verify command](#422-verifying-an-eprescription-qr-code). Example:
 ```
-https://eprescription.hin.ch/#CHMED16A1...AA==&q07lE0g4asrIIR9mdBgSIHUVsf9k9QIF+74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601&i=Vorname%20Nachname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
+https://eprescription.hin.ch/#CHMED16A1...AA==&q07lE0g4asrIIR9mdBgSIHUVsf9k9QIF+74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601&i=FirstName%20Surname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-### 2.3. QR Code Rezeptdaten
+The ePrescription data is located in the link in the QR code between the "#" and the "&". It is based on the <a href="https://drive.google.com/file/d/1sBUEHx86ya8TJUbNSbzJNcaWSLTHtONn/view" target="_blank">CHMED16A specification</a>. Because the link should be as short as possible, only the compressed variant CHMED16A1 should be used.
 
-Die Rezeptdaten befinden sich im zweiten Teil hinter dem Fragment # und werden auf Basis bestehender [CHMED16A Spezifikation](https://drive.google.com/file/d/1sBUEHx86ya8TJUbNSbzJNcaWSLTHtONn/view) abgebildet.
+### 2.2. QR code signature
 
-Es soll aus Platzgründen nur die komprimierte Variante CHMED16A1 verwendet werden.
+The QR code signature ensures the integrity and authenticity of the ePrescription and enables it to be verified. A key pair is used to save space. The signature is about 250 to 300 characters in length.
 
-### 2.4. QR Code Signatur
+The signature contains:
 
-Die QR Code Signatur soll es ermöglichen die Integrität und Authentizität des eRezepts zu gewährleisten und überprüfbar zu machen.
-
-Aus Platzgründen wird dafür ein Schlüsselpaar verwendet.
-
-Inhalt der Signatur:
-
-* Identität des Akteurs (Name und HIN Id)
+* Identity of the actor (Name and HIN eID)
 * Timestamp
-* Kryptographische Signatur
+* Cryptographic signature
 
-Beispiel Signatur:
-
+Example:
 ```
-&i=Vorname%20Nachname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
+&i=Firstname%Lastname%20%28HIN%20eID%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-Es ist mit einer Signatur im Umfang von ca. 250-300 Zeichen zu rechnen die im QR Code hinzugefügt werden müssen.
+### 2.3. Key management
 
-### 2.5. Schlüsselmanagement
+An ECDSA key is used for the signature. It is stored and managed on a secure access-controlled server. The key can be rotated or renewed if necessary. To ensure that past ePrescriptions remain valid during and after a rotation, a list of all valid keys is kept.
 
-Für die Signatur wird ein ECDSA Schlüssel verwendet der von HIN Sign auf einem gesicherten Server zugriffsgeschützt verwaltet wird.
+### 2.4. Audit log
 
-Das System verfügt über die Möglichkeit zur Rotation resp. Erneuerung des Schlüssel. Damit kann der Schlüssel bei Bedarf jederzeit ersetzt werden.
+Every action triggers an entry in a HIN Sign audit log. It contains the following information:
 
-Um sicherzustellen, dass ausgestellte eRezepte auch während und nach einer Rotation verifizierbar bleiben wird eine Liste aller Zertifikate der gültigen Schlüssel geführt.
+* Type of action (signature, revocation, dispensation, cancellation)
+* Action data
+	* ePrescription ID
+	* Any other action parameters
+* Actor (user identity)
+* Timestamp of action
 
-### 2.6. Audit Log
+The audit log should ensure that the use of the service is transparent. The audit log can also be used to identify and correct any misuse. The corrections can be done in bulk. However, they are limited to the revoking of wrongly issued ePrescriptions.
 
-Für jede Aktion wird bei HIN Sign in einem Audit Log ein entsprechender Eintrag geführt der folgende Informationen enthält:
+The audit log does not contain any ePrescription data, with the exception of its ID.
 
-* Art der Aktion (signieren, revozieren, entwerten, annullierung)
-* Aktionsdaten
-    * eRezept ID
-    * Allfällige weitere Parameter der Aktion
-* Aktor (Identität des Benutzers)
-* Zeitpunkt der Aktion
-
-Mit dem Audit Log soll sichergestellt werden, dass die Verwendung des Service nachvollziehbar ist. Das Audit Log kann auch verwendet werden um gewisse Missbräuche aufzudecken und diese anhand der Daten zu korrigieren.
-
-Diese Korrekturen können per Massenmutation erfolgen, beschränken sich jedoch auf das ungültig erklären von fälschlicherweise ausgestellten Rezepten.
-
-Zu beachten ist, dass im Audit Log keinerlei Daten aus dem eRezept, abgesehen von dessen ID, gespeichert werden.
-
-### 2.7. Regeln
+### 2.5. Rules
 
 <table valign="top">
   <tr>
-   <td><strong>Funktion</strong>
+   <td><strong>Action</strong>
    </td>
-   <td><strong>Regeln</strong>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Erstellen
-   </td>
-   <td>CHMED16 eRezept ID darf nicht bereits ausgestellt worden sein<br>CHMED16 eRezept ID muss eine zufällige nach UUID Standard generierte ID sein
+   <td><strong>Rules</strong>
    </td>
   </tr>
   <tr valign="top">
-   <td>Revozieren
+   <td>Create
    </td>
-   <td>CHMED16 eRezept ID muss existieren
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Entwerten
-   </td>
-   <td>CHMED16 eRezept ID muss existieren<br>CHMED16 eRezept ID darf nicht revoziert sein<br>Falls die CHMED16 eRezept ID vollständig entwertet wurde, müssen weitere Entwertungen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>)
+   <td>- CHMED16A ePrescription ID must be a randomly generated ID, according to the UUID standard<br>- CHMED16A ePrescription ID must be unique and not issued yet
    </td>
   </tr>
   <tr valign="top">
-   <td>Verifizieren
+   <td>Revoke
+   </td>
+   <td>CHMED16A ePrescription ID must exist
+   </td>
+  </tr>
+  <tr valign="top">
+   <td>Dispense
+   </td>
+   <td>- CHMED16A ePrescription ID must exist<br>- CHMED16A ePrescription ID must not have been revoked<br>- If the CHMED16A ePrescription ID was fully dispensed, further dispensations must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>)
+   </td>
+  </tr>
+  <tr valign="top">
+   <td>Verify
    </td>
    <td>n/a
    </td>
   </tr>
   <tr valign="top">
-   <td>Annulieren
+   <td>Cancel
    </td>
-   <td>Zu annulierender Event muss:<br>
-        <ul>
-          <li>existieren</li>
-          <li>nicht bereits annuliert sein</li>
-          <li>von selber HIN eID erstellt worden sein</li>
-        </ul>
+   <td>The event to be cancelled must:<br>
+- exist<br>- have been created by the same HIN eID<br>- not have been cancelled already
    </td>
   </tr>
 </table>
 
-### 2.8. Entwertung und Revokation
+### 2.6. Events
 
-Um die Revokation und Abgabe von Medikamenten zu erfassen wird zu einem eRezept eine Liste von Events geführt die dessen Lebenszyklus abbilden.
+Events record the lifecycle of an ePrescription. 
 
-#### 2.8.1. Events
+#### 2.6.1. Event types
 
-##### Event Types
 <table>
   <tr>
-   <td>Revozierung
+   <td>Revoke
    </td>
-   <td>Das eRezept wird für ungültig erklärt und ist nicht mehr gültig. Dies hat nichts mit Entwertungen zu tun und sollte nur bei fälschlicherweise ausgestellten eRezepten verwendet werden.
-   </td>
-  </tr>
-  <tr>
-   <td>Teil-Entwertung
-   </td>
-   <td>Für ein oder mehrere Medikamente im eRezept werden Teil-Abgaben erfasst. Das eRezept ist weiterhin für den Rest gültig. Teil-Entwertungen von revozierten Rezepten sind nicht erlaubt. Weitere Teil-Abgaben bei vollständig entwerteten Rezepten müssen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). Bei forcierten Abgaben liegt die Verantwortung bei den Abgebenden.
+   <td>The ePrescription is marked as void and is not valid anymore. This has nothing to do with dispensations and should only be used for wrongly issued ePrescriptions.
    </td>
   </tr>
   <tr>
-   <td>Vollständige Entwertung
+   <td>Partial dispense
    </td>
-   <td>Das eRezept resp. sämtliche enthaltenen Medikamente werden als abgegeben markiert. Falls alle im Rezept enthaltenen Medikamente via Teil-Entwertung abgegen wurden, muss danach eine vollständige Entwertung gemacht werden (dies geschieht nicht automatisiert). Entwertungen von revozierten Rezepten sind nicht erlaubt. Weitere Abgaben bei vollständig entwerteten Rezepten müssen forciert werden (siehe <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). Bei forcierten Abgaben liegt die Verantwortung bei den Abgebenden.
+   <td>One or multiple prescribed medicaments are dispensed. The ePrescription still contains medicaments that were not dispensed. Partial dispenses of revoked ePrescriptions are not allowed. Partial dispenses of fully dispensed ePrescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
    </td>
   </tr>
   <tr>
-   <td>Annullierung
+   <td>Full dispense
    </td>
-   <td>Ein Event (Revozierung, Teil-Entwertung, Vollständige Entwertung sowie eine andere Annullierung) werden als annulliert markiert.
+   <td>The ePrescription or all medicaments contained in it are  dispensed. If all medicaments contained in the ePrescription have been dispensed through partial dispense, a full dispense must be made afterwards (this is not done automatically). Dispenses of revoked ePrescriptions are not allowed. Full dispenses of fully dispensed ePrescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-eprescription-dispensation">4.2.4. Recording an ePrescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
+   </td>
+  </tr>
+  <tr>
+   <td>Cancel
+   </td>
+   <td>An event (Revoke, Partial dispense, Full dispense, Cancel) is cancelled.
    </td>
   </tr>
 </table>
 
-##### Event Data
+#### 2.6.2. Event data
 
-Revokation und Entwertungen werden als Events erfasst und enthalten folgende Informationen:
+Revocations, (partial) dispensations and cancellations contain the following data:
 
 <table>
   <tr>
-   <td><strong>Name</strong>
+   <td><strong>Field name</strong>
    </td>
-   <td><strong>Erforderlich?</strong>
+   <td><strong>Mandatory?</strong>
    </td>
-   <td><strong>Beschreibung</strong>
+   <td><strong>Description</strong>
    </td>
   </tr>
   <tr>
@@ -221,7 +189,7 @@ Revokation und Entwertungen werden als Events erfasst und enthalten folgende Inf
    </td>
    <td>mandatory
    </td>
-   <td>Interne Id eines Events
+   <td>Internal Id of an event
    </td>
   </tr>
   <tr>
@@ -229,9 +197,9 @@ Revokation und Entwertungen werden als Events erfasst und enthalten folgende Inf
    </td>
    <td>mandatory
    </td>
-   <td>Type des Events
+   <td>Event type
 <p>
-Es existieren folgende Typen:<p>
+The following event types exist:<p>
 <p>
 <code>revoke | partial_dispense | full_dispense | cancel</code><p>
    </td>
@@ -241,17 +209,18 @@ Es existieren folgende Typen:<p>
    </td>
    <td>mandatory
    </td>
-   <td>Referenz auf das Feld “Id” des CHMED16 eRezept aus dem Input
+   <td>Reference to the "Id" field of the CHMED16A ePrescription
    </td>
   </tr>
   <tr>
-   <td>Event Data
+   <td>Event data
    </td>
    <td>optional
    </td>
-   <td>Für Type partial_dispense:
+   <td>For <code>partial_dispense</code>:
 <p>
-Eine Liste von Medikament Dispensationen mit folgenden Feldern:</p>
+A list of medicament dispenses with the following fields:
+</p>
 <table>
   <tr>
    <td><strong>Parameter</strong>
@@ -266,7 +235,7 @@ Eine Liste von Medikament Dispensationen mit folgenden Feldern:</p>
    </td>
    <td>string
    </td>
-   <td>The Id of the Medication*
+   <td>The Id of the medicament*
    </td>
   </tr>
   <tr>
@@ -282,13 +251,13 @@ Eine Liste von Medikament Dispensationen mit folgenden Feldern:</p>
    </td>
    <td>string
    </td>
-   <td>The Id of the Substitute  \ Medication*
+   <td>The Id of the substitute  / medicament*
    </td>
   </tr>
 </table><p>
-*The Id is the field “Id” from the list of “Medications” from the CHMED16 data received as input. It does not regard the IdTypes and therefore works with all of them, assuming no collision between the different Types.</p>
-<p>Für Type cancel:
-<br>Eine Referenz auf eine ID eines anderen Events.</p>
+*The Id is the field “Id” from the list of “Medicaments” from the CHMED16A data received as input. It does not regard the IdTypes and therefore works with all of them, assuming no collision between the different Types.</p>
+<p>For <code>cancel</code>:
+<br>A reference to an Id of another event.</p>
 <table>
   <tr>
    <td><strong>Parameter</strong>
@@ -314,145 +283,126 @@ Eine Liste von Medikament Dispensationen mit folgenden Feldern:</p>
    </td>
    <td>mandatory
    </td>
-   <td>Zeitstempel
+   <td>Timestamp of the event
    </td>
   </tr>
   <tr>
-   <td>Actor (HIN eID)
+   <td>Actor HIN eID
    </td>
    <td>mandatory
    </td>
-   <td>HIN eID des Actors
+   <td>The actor's HIN eID
    </td>
   </tr>
   <tr>
-   <td>Actor (Name)
+   <td>Actor name
    </td>
    <td>mandatory
    </td>
-   <td>Name des Actors
+   <td>The actor's name
    </td>
   </tr>
 </table>
 
-Die Entwertungs-Liste wird in anonymisierter Form (dh. ohne die Inhalte aus dem eRezept und ohne Patienteninformationen) durch HIN in der Schweiz gehostet.
+The event data is hosted in anonymised form (without the content of the ePrescription and without patient information) by HIN in Switzerland.
 
-#### 2.8.2. Entwertung Szenarien
+## 3. Integration of the HIN Sign ePrescription signature service
 
-Durch die Möglichkeit zur Erfassung von abgegebenen Medikamenten und der Markierung eines Rezepts als “Vollständig Entwertet” werden die unten aufgeführten Anwendungsfälle ermöglicht. Dies sind Beispiele und decken nicht alle möglichen Anwendungsfälle ab.
+### 3.1 Architecture
 
-Use Case 1: „Einfaches“ Rezept  
-Use Case 2: „Einfaches“ Rezept mit Menge >1  
-Use Case 3: Nicht repetierbares Rezept  
-Use Case 4: Repetierbares Rezept  
-Use Case 5: Repetierbares Rezept mit zeitlicher Beschränkung  
-Use Case 6: Dauerrezept  
-Use Case 7: Abgelaufenes Dauerrezept  
-Use Case 8: Abgelaufenes „einfaches“ Rezept  
-Use Case 9: Abgelaufenes repetierbares Rezept  
-Use Case 10: Dauerrezept mit Substitution  
-Use Case 11: Komplexes Rezept  
-
-Im Appendix ist ein [Beispiel Anwendungsfall mit Entwertungen](#B-Beispiel-Anwendungsfall-mit-Entwertungen) detailliert beschrieben.
-
-
-## 3. Integration des HIN Sign Rezept Signatur Service
-
-### 3.1 Architektur
-
-Ausstellersysteme (PIS/KIS) integrieren HIN Sign gemäss folgendem Schema über das CLI um die Daten ausschliesslich lokal zu verarbeiten:
+Issuing systems (PIS/KIS) integrate the HIN Sign ePrescription signature service via the CLI, as shown in the diagram below. Patient and ePrescription data remains local and is never sent to HIN.
 
 ![Architektur HIN Sign eRezept Service](./assets/Architektur_HIN_Sign_eRezept_Service.svg)
 
-### 3.2 Authentisierung und Autorisierung
+### 3.2 Authentication and authorisation
 
-Für die verschiedenen Funktionen des HIN Sign Rezept Signatur Service bestehen unterschiedliche Anforderungen betreffend der Stärke der Authentisierung und der erforderlichen Autorisierung.
+For the various actions of the HIN Sign ePrescription signature service, there are different requirements regarding the strength of authentication and authorisation.
 
-**Übersicht**
+**Overview**
 
 <table valign="top">
   <tr>
-   <td><strong>Funktion</strong>
+   <td><strong>Action</strong>
    </td>
-   <td><strong>Authentisierung</strong>
+   <td><strong>Authentication</strong>
    </td>
    <td><strong>Tech</strong>
    </td>
-   <td><strong>Autorisierung</strong>
+   <td><strong>Authorisation</strong>
    </td>
   </tr>
   <tr valign="top">
-   <td>Erstellen
+   <td>Create
    </td>
-   <td>Persönliche HIN eID mit Härtung 20 (Person Code 10)
+   <td>Personal HIN eID with hardening 20 (person code 10)
    </td>
-   <td>Via Auth-Service (basiert auf SAML)
+   <td>Auth-Service (based on SAML)
    </td>
-   <td>HIN Mitgliedschaft
+   <td>HIN membership
    </td>
   </tr>
   <tr valign="top">
-   <td>Revozieren
+   <td>Revoke
    </td>
-   <td>Persönliche HIN eID mit Härtung 20
+   <td>- Personal HIN eID with hardening 20
 <p>
-Team HIN eID
+- Team HIN eID
    </td>
-   <td>Via Auth-Service (basiert auf SAML)
+   <td>- Auth-Service (based on SAML)
 <p>
-OAuth via HIN ACS
+- OAuth via HIN ACS
    </td>
-   <td>HIN Mitgliedschaft
+   <td>HIN membership
    </td>
   </tr>
-  <tr >
-   <td>Verifizieren
+  <tr>
+   <td>Verification
    </td>
-   <td>Keine
+   <td>None
    </td>
-   <td>Keine
+   <td>None
    </td>
-   <td>
+   <td>None
    </td>
   </tr>
   <tr valign="top">
-   <td>Entwerten
+   <td>Dispense
    </td>
-   <td>Persönliche & Team HIN eID
+   <td>- Personal HIN eID
+   <p>- Team HIN eID
    </td>
    <td>OAuth via HIN ACS
    </td>
-   <td>HIN Mitgliedschaft
+   <td>HIN membership
    </td>
   </tr>
   <tr valign="top">
-   <td>Annullieren
+   <td>Cancel
    </td>
-   <td>Persönliche HIN eID mit Härtung 20
+   <td>- Personal HIN eID with hardening 20
 <p>
-Team HIN eID
+- Team HIN eID
    </td>
-   <td>Via Auth-Service (basiert auf SAML)
+   <td>- Auth-Service (based on SAML)
 <p>
-OAuth via HIN ACS
+- OAuth via HIN ACS
    </td>
-   <td>HIN Mitgliedschaft
+   <td>HIN membership
 <p>
-& Nur selber erstellte Events
+& only self-created events
    </td>
   </tr>
 </table>
 
-Hinweis zur Authentisierung mit “Persönliche HIN eID mit Härtung 20”:
-Diese Authentisierung wird über den HIN / ADSwiss Auth-Service abgewickelt, welcher sicherstellt dass es sich beim Nutzer um einen korrekt identifizierte und zeitnah authentisierte Person handelt (wird nur auf Prod sichergestellt). HIN Sign stellt zudem über den Person Code sicher dass es sich um ein Arzt / Ärztin handelt.
+Note on the authentication with “Personal HIN eID with hardening 20”: <br>
+This authentication is done via the HIN/ADSwiss Auth-Service, which ensures that the user was a correctly identified and recently authenticated. HIN Sign also uses the person code 10 to ensure that the person is a doctor.
 
-**EPD Authentisierung**<br>
-Die Ausstellung von eRezepten erfordert die Authentifizierung nach EPD-Level.
-Dazu wird der HIN/ADSwiss Auth-Service gemäss folgendem Ablaufdiagramm verwendet:
+**EPD authentication**<br>
+The issuance of ePrescriptions requires authentication on EPD level. The HIN/ADSwiss Auth-Service is used for this, as per the diagram below:
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
-## 4. HIN Sign API für Rezept Signatur
+## 4. HIN Sign API for ePrescription signature
 
 ### 4.1. Introduction
 
@@ -474,7 +424,7 @@ ENABLE_EPRESCRIPTION=true
 ```
 
 #### 4.1.3. ePrescription JSON input
-The Certifaction CLI command generates ePrescriptions signatures for ePrescriptions based on the CHMED16A1 standard as described under [Spezifikation QR Code](#2-eRezept-QR-Code-Spezifikation).
+The Certifaction CLI command generates ePrescriptions signatures for ePrescriptions based on the CHMED16A1 standard as described under [QR code specification](#2-hin-sign-eprescription-signature-qr-code-specification).
 
 #### 4.1.4. General usage
 
@@ -491,7 +441,8 @@ Please refer to the main documentation for the list of all available global flag
 
 #### 4.1.5. Authentication
 
-Please see chapter [Authentisierung und Autorisierung](#32-Authentisierung-und-Autorisierung)
+Please see chapter [Authentication and Authorisation](#32-authentication-and-authorisation).<br>
+
 When indicated, the requests must be authenticated using the Authorization header as following (an environment is provided for testing that does not enforce authentication):
 
 HTTP Server Mode:
@@ -506,7 +457,7 @@ CLI Mode:
 
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
 
-For the creation of ePrescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-Authentisierung-und-Autorisierung) for further details.
+For the creation of ePrescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
 
 ### 4.2. ePrescription Endpoints
 
@@ -602,7 +553,7 @@ Yes
    </td>
    <td>
    </td>
-   <td>Can be used with the --output-format qrcode to indicate the size of the resulting QR Code in pixels. Optional
+   <td>Can be used with the --output-format qrcode to indicate the size of the resulting QR Code in pixels (optional)
    </td>
   </tr>
 </table>
@@ -689,13 +640,10 @@ The verification information consists of the following information:
   <tr valign="top">
    <td>Dispensations
    </td>
-   <td>If available, an array containing each Medication with a recorded Dispensation event and a list of those events
+   <td>If available, an array containing each Medicament with a recorded Dispensation event and a list of those events
    </td>
   </tr>
 </table>
-
-
-
 
 **Example Response**
 
@@ -804,7 +752,7 @@ Yes
    </td>
    <td>See below
    </td>
-   <td>Optional list of Medication dispensation to record a partial dispensation
+   <td>Optional list of Medicament dispensation to record a partial dispensation
    </td>
   </tr>
   <tr valign="top">
@@ -819,7 +767,7 @@ Yes
 
 
 **Request Body**<br>
-The request body optionally contains a list of Medication dispensation to record a partial dispensation.
+The request body optionally contains a list of Medicament dispensation to record a partial dispensation.
 
 The input consists of the following fields:
 
@@ -837,7 +785,7 @@ The input consists of the following fields:
    </td>
    <td>string
    </td>
-   <td>The Id of the Medication
+   <td>The Id of the Medicament
    </td>
   </tr>
   <tr>
@@ -862,7 +810,7 @@ The input consists of the following fields:
 ]
 ```
 
-Please check the [section for Dispensation](#28-Entwertung-und-Revokation) for more information about what is stored.
+Please check the [event data section](#262-event-data) for more information about what data is stored.
 
 **Response**
 
@@ -987,11 +935,11 @@ Then post the ePrescription data to the /ePrescription/create endpoint as follow
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <access token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
-A complete example commands incl. authentication can be found in [Appendix A](#A-eRezept-Authentication-and-Use-case-Commands).
+A complete example commands incl. authentication can be found in [Appendix A](#a-eprescription-authentication-and-use-case-commands).
 
 ## Appendix
 
-### A. eRezept Authentication and Use-case Commands
+### A. ePrescription authentication and use case commands
 
 #### Test Environment
 
@@ -1085,135 +1033,135 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 2. Verify ePrescription
 
-```
-$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
+	```
+	$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
 
-HTTP/200 OK
-{
-  "prescriptionId":"00000000-0000-0000-0000-000000000000",
-  "issued_at":"0000-00-00T00:00:00+00:00",
-  "issued_by":"Dr. Test Test 1 (Test1)",
-  "valid":true,
-  "revoked":false,
-  "dispensed":false
-}
-```
+	HTTP/200 OK
+	{
+	  "prescriptionId":"00000000-0000-0000-0000-000000000000",
+	  "issued_at":"0000-00-00T00:00:00+00:00",
+	  "issued_by":"Dr. Test Test 1 (Test1)",
+	  "valid":true,
+	  "revoked":false,
+	  "dispensed":false
+	}
+	```
 
 3. Dispense ePrescription fully
 
-```
-$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <hin_acs_oauth_token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
+	```
+	$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <hin_acs_oauth_token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
 
-HTTP/200 OK
-```
+	HTTP/200 OK
+	```
 
 4. Verify ePrescription
 
-```
-$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
-HTTP/200 OK
-{
-   "prescription_id":"00000000-0000-0000-0000-000000000000",
-   "issued_at":"0000-00-00T00:00:00+00:00",
-   "issued_by":"Dr. Test Test 1 (test1)",
-   "valid":true,
-   "revoked":false,
-   "dispensed":true,
-   "dispensed_at":"0000-00-00T00:00:00.000000000Z",
-   "dispensed_by":"HIN|pharma1",
-   "events":[
-      {
-         "id":"00000000-0000-0000-0000-000000000000",
-         "type":"full_dispense",
-         "reference":"00000000-0000-0000-0000-000000000000",
-         "timestamp":"0000-00-00T00:00:00.000000000Z",
-         "actor":"pharma1",
-	 "actor_name":"Pharmacist 1"
-      }
-   ]
-}
-```
+	```
+	$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
+	
+	HTTP/200 OK
+	{
+	   "prescription_id":"00000000-0000-0000-0000-000000000000",
+	   "issued_at":"0000-00-00T00:00:00+00:00",
+	   "issued_by":"Dr. Test Test 1 (test1)",
+	   "valid":true,
+	   "revoked":false,
+	   "dispensed":true,
+	   "dispensed_at":"0000-00-00T00:00:00.000000000Z",
+	   "dispensed_by":"HIN|pharma1",
+	   "events":[
+		   {
+	         "id":"00000000-0000-0000-0000-000000000000",
+	         "type":"full_dispense",
+	         "reference":"00000000-0000-0000-0000-000000000000",
+	         "timestamp":"0000-00-00T00:00:00.000000000Z",
+	         "actor":"pharma1",
+			 "actor_name":"Pharmacist 1"
+	      }
+	   ]
+	}
+	```
 
-### B. Beispiel Anwendungsfall mit Entwertungen
+### B. Example use case
 
-Im Folgenden wird anhand eines konkreten Use Cases aufgezeigt welche Informationen erfasst werden und wie eine Apotheke diese interpretieren kann um über eine Abgabe zu entscheiden.
+The following example, based on a specific use case, shows which data is recorded and how a pharmacist can interpret it to make a decision about a further dispensation.
 
-Rezept:
+ePrescription:
 
-* 1 Medikament mit Menge: 1
-* Keine Angabe von Repetitionen, d. h. 1 x repetierbar (grundsätzlich nur falls Indikation noch gegeben ist)
-* Kein Dauerrezept
-* Ausstelldatum: 27.01.2022 → Gültigkeitsdauer abhängig von kantonalen Bestimmungen
+* 1 medicament with amount: 1
+* No repetition specified, i.e. repeatable once (only if the indication still exists)
+* No permanent prescription
+* Issued on 27.01.2022 → Duration of validity depends on cantonal regulations
 
 <table>
   <tr>
-   <td><strong>Wer</strong>
+   <td><strong>Who</strong>
    </td>
-   <td><strong>Ereignis</strong>
-   </td>
-   <td><strong>Erfasste Entwertungen</strong>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Erhält neues eRezept
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Geht in Apotheke 1
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Apotheke 1
-   </td>
-   <td>Verifiziert eRezept und erkennt das noch keine Entwertungen erfolgt sind -> gibt Medikament aus gemäss Rezept
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Apotheke 1
-   </td>
-   <td>Erfasst Teil-Entwertung
-   </td>
-   <td>Teil-Entwertung:
-<table>
-  <tr>
    <td><strong>Event</strong>
    </td>
-   <td><strong>Teil-Entwertung</strong>
+   <td><strong>Recorded dispense</strong>
    </td>
   </tr>
   <tr>
-   <td>Anzahl
+   <td>Patient
+   </td>
+   <td>Receives new ePrescription
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>Patient
+   </td>
+   <td>Goes to pharmacy 1
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr valign="top">
+   <td>Pharmacy 1
+   </td>
+   <td>Verifies ePrescription and identifies that there were no dispenses made yet -> Dispenses medicament according to ePrescription
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr valign="top">
+   <td>Pharmacy 1
+   </td>
+   <td>Records partial dispense
+   </td>
+   <td>Partial dispense:
+<table>
+  <tr>
+   <td>Event
+   </td>
+   <td>Partial dispense
+   </td>
+  </tr>
+  <tr>
+   <td>Amount
    </td>
    <td>1
    </td>
   </tr>
   <tr>
-   <td>Datum
+   <td>Date
    </td>
    <td>28.01.2022
    </td>
   </tr>
   <tr valign="top">
-   <td>Abgegeben von
+   <td>Dispensed by
    </td>
-   <td>Apotheke 1
+   <td>Pharmacy 1
    </td>
   </tr>
   <tr valign="top">
-   <td>Medikament
+   <td>Medicament
    </td>
    <td>3458478 (AMLODIPIN Sandoz eco Tabl 10 mg /
-<p>
 Blister 30 Stk)
    </td>
   </tr>
@@ -1223,69 +1171,67 @@ Blister 30 Stk)
   <tr>
    <td>Patient
    </td>
-   <td>Geht in Apotheke 2
+   <td>Goes to pharmacy 2
    </td>
    <td>
    </td>
   </tr>
   <tr valign="top">
-   <td>Apotheke 2
+   <td>Pharmacy 2
    </td>
-   <td>Verifiziert eRezept und erkennt das bereits eine Entwertungen erfolgt ist ->  gibt Medikament aus gemäss Rezept
+   <td>Verifies ePrescription and sees that one dispensation has already been made -> Dispenses medicament according to prescription
    </td>
    <td>
    </td>
   </tr>
   <tr valign="top">
-   <td>Apotheke 2
+   <td>Pharmacy 2
    </td>
-   <td>Erfasst Teil-Entwertung und (optional) markiert Rezept als “vollständig” abgegeben
+   <td>Records partial dispense (optional) and records a full dispense
    </td>
-   <td>Teil-Entwertung:
+   <td>Partial dispense (optional):
 <table>
   <tr>
-   <td><strong>Event</strong>
+   <td>Event
    </td>
-   <td><strong>Teil-Entwertung</strong>
+   <td>Partial dispense
    </td>
   </tr>
   <tr>
-   <td>Anzahl
+   <td>Amount
    </td>
    <td>1
    </td>
   </tr>
   <tr>
-   <td>Datum
+   <td>Date
    </td>
    <td>10.02.2022
    </td>
   </tr>
   <tr>
-   <td>Abgegeben von
+   <td>Dispensed by
    </td>
-   <td>Apotheke 2
+   <td>Pharmacy 2
    </td>
   </tr>
   <tr>
-   <td>Medikament
+   <td>Medicament
    </td>
-   <td>3458478 (AMLODIPIN Sandoz eco Tabl 10 mg /
-<p>
-Blister 30 Stk)
+   <td>3458478 (AMLODIPIN Sandoz eco Tabl 10 mg / Blister 30 Stk)
    </td>
   </tr>
 </table>
-Vollständige Entwertung:
+Full dispense:
 <table>
   <tr>
-   <td><strong>Event</strong>
+   <td>Event
    </td>
-   <td><strong>Vollständige Entwertung</strong>
+   <td>Full dispense
    </td>
   </tr>
   <tr>
-   <td>Timestamp
+   <td>Date
    </td>
    <td>10.02.2022
    </td>
@@ -1293,7 +1239,7 @@ Vollständige Entwertung:
   <tr>
    <td>Actor
    </td>
-   <td>Apotheke 2
+   <td>Pharmacy 2
    </td>
   </tr>
 </table>
@@ -1302,60 +1248,57 @@ Vollständige Entwertung:
   <tr>
    <td>Patient
    </td>
-   <td>Geht in Apotheke 3
+   <td>Goes to pharmacy 3
    </td>
    <td>
    </td>
   </tr>
   <tr valign="top">
-   <td>Apotheke 3
+   <td>Pharmacy 3
    </td>
-   <td>Verifiziert eRezept und erkennt das es bereits vollständig entwertet wurde -> gibt kein Medikament aus
-   </td>
+   <td>Verifies ePrescription and identifies that it has already been fully validated -> Does not dispense medicament
+      </td>
    <td>
    </td>
   </tr>
 </table>
 
+### C. Example input and output data
 
-Analog zu diesem Beispiel können für sämtliche oben aufgeführten Use Cases die Medikamentenabgaben als Entwertungen erfasst werden um den Apotheken die Informationen zu liefern die Sie brauchen um über eine weitere Abgabe zu entscheiden.
+#### Example “simple” (~660 characters)
 
-### C. Beispiele Input- und Outputdaten
-
-#### Beispiel “Einfach” (~660 characters)
-
-CHMED16 Daten
+CHMED16 data
 
 ```
 CHMED16A1H4sIAAAAAAAEAMVU3W7TMBR+lcq3S4SPHdtx7raVAaKFqutAAnoREreJ2jpT4gKj6ptxx4txnCwVSKQSu0GVqvPX7+fIpwdyuXcFSYiSFCjloGKtNQnI2GGRUZAh1SGwBUASyYTqC8oSSnHgVe4HZM7z1UqF6WcqwkhxjCKdhcJkWc650GIlcXZq8sXDvSEJtHGZpTtjXUOSj4cORyuIpWpRu0EekFnVDYzxmwbtZ+l13dTV7g9t5Ij1eZVicfYWMRab9byxmF1urMH8zpbezO3iNTkGj4RRJIHH7Bwj/J2RhUAHGa+2e/fF1PnPH9bu7XqAnHEhZHzGrqeGJ5EXVVbk9T7bfHr20tTfBwRAxCQHen7f/y7guqi2pnGmLm1j7MbUA/Qx1VLz8/aftvvf7L9Pm2ZQAQgBTEX/QwL+dJa6Et8/SQ7kqr0z0DGEFPxbDsh16R48lqktZjdv8FYwnabfyl2KhRfG5giasIBMTj3nWp4JPrmEjJ93J+fxx5PGTY3X1tbSzuHpGDthCPUu3eKM4O2Kujbr29C3QcSd9ex0udibYyKUWvbLZX3Au54EdupFfSD6QD4CCBEIBcsjjpJZUVnv6yJCxlEsYMRk+59z62pj/MLuLBreoe2vZj2KsfOhvMcyp0yhAzLfbbzj4y8tzloh3gQAAA==
 ```
 
 
-QR Code Inhalt
+QR code content
 
 ```
 https://eprescription.hin.ch/#CHMED16A1H4sIAAAAAAAEAMVU3W7TMBR+lcq3S4SPHdtx7raVAaKFqutAAnoREreJ2jpT4gKj6ptxx4txnCwVSKQSu0GVqvPX7+fIpwdyuXcFSYiSFCjloGKtNQnI2GGRUZAh1SGwBUASyYTqC8oSSnHgVe4HZM7z1UqF6WcqwkhxjCKdhcJkWc650GIlcXZq8sXDvSEJtHGZpTtjXUOSj4cORyuIpWpRu0EekFnVDYzxmwbtZ+l13dTV7g9t5Ij1eZVicfYWMRab9byxmF1urMH8zpbezO3iNTkGj4RRJIHH7Bwj/J2RhUAHGa+2e/fF1PnPH9bu7XqAnHEhZHzGrqeGJ5EXVVbk9T7bfHr20tTfBwRAxCQHen7f/y7guqi2pnGmLm1j7MbUA/Qx1VLz8/aftvvf7L9Pm2ZQAQgBTEX/QwL+dJa6Et8/SQ7kqr0z0DGEFPxbDsh16R48lqktZjdv8FYwnabfyl2KhRfG5giasIBMTj3nWp4JPrmEjJ93J+fxx5PGTY3X1tbSzuHpGDthCPUu3eKM4O2Kujbr29C3QcSd9ex0udibYyKUWvbLZX3Au54EdupFfSD6QD4CCBEIBcsjjpJZUVnv6yJCxlEsYMRk+59z62pj/MLuLBreoe2vZj2KsfOhvMcyp0yhAzLfbbzj4y8tzloh3gQAAA==&i=Vorname+Nachname+%28HIN+Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-QR Code
+QR code
 
 ![Beispiel Einfach QRCode](./assets/Beispiel_Einfach_QRCode.png)
 
 
-#### Beispiel “Dora Graber” (~1350 characters)
+#### Example “Dora Graber” (~1350 characters)
 
-CHMED16 Daten
+CHMED16 data
 
 ```
 CHMED16A1H4sIAAAAAAAACr2WX2/iOBDAv4rl1wtZ/yEh8LTlaHuVll1Eu620qz4YGIiV4CDHqbbb49v0M9zTvfHFbhwaWvpvV6eqgIMzGTv+zYzHc0NHymkwjvZu6NFntQTao4PCKhrQT3e3x1ZNwKKgP0A1yrvtqMV5S0gUHYOZ4bOeCOipswBeoQ/WlM6qsgTidb7pFUolYwxv/tTu+k7Hv8Is8GYG2B2lhfFvY50uSZIEG/5QfjhUOvdKuKhwUS/l4wR0udKQh9MUNU5mJe19v6Fn1yuoV3Ku/AAeyjAOedjGJriMO6FgHC9hFCby7+HB8fBwwBin68uADmHmDTD4VLohGBzsF2RhSXssoONpPf0JqrTXwbYToRilMY8uG5HYiqJOeyfid6JuZyeSTSdu1PnuWWe7FPUQhzc4XW/Kr0ajhYUf8Jg2jnbP+fpyva6h9BRdaNx2Qv8KKqSUIo5rs22nkIhabDUG7sgWCE0FE6zFui3hJx24s2JrkhMzhrK2yQD1WcgCjs3/Y7v0q98uAGMhQ/WzbDEuvTVPi9nEgjFo2oAerFYnPj5QfqYmOTgHBK5cHhJtSFakOZhyc1tZmFvQsCQXPpAsUdU83/xTggkJTjIuFI4fffFdWNXWPK0mfm2NMSlnIolrqzSk7f9L+oDyF6QDWFkoS108Ih0WdoFcpDJqkm5uzUIvCG4cMlRp/hO0Q6x9qic0URRLlryF336fpp9XLi2m6cxW0+zDX2B/7lN9fZmGPIsT0M+TkZpmD/YBJoZIdCL5lmT8l2QnZg6Ze+KmV4CeCTrZcPEdjOi2u51Evq+bRspm2pSFIR8IzuByjMAcFvto54VFpCU5naa5moMJfj8Wa1j+3A6LuiwRb5VLmsZfhR1WZQb5FdhypYyp8ADZ32jqh16qnEjyg7jN7SLX05SAxtyTLl/YZPw+KsWOLZEJa0dv5cemve7Hc4RyxWr+BKoPmvRhpuw8JDwiLSIZGWpToavI1Z1fDzFL4rZr+Dm5wI0LRKHH3ebfafaiER7lz3tj3DtaRDxm3fh9t6hPNza9dumyKh/5WLuHyHKLakiuzILwFmthC8hMGYW+v4BpWkLuz4/6GX6fDW/xNL7buJfbbfa+2C+dlZzsTkuOLq2w7tr3/b2D6et4+OrREVZPddnkbzAlwNLrozYWDTvU2ghYttWf1jOX5oPjDvCkQO1OzDgWVTIWss6C30q/duzUpSOaivvSkYkzHvek6MnkD8Z79QTjJYYc7WsP6LPRXV2KNYHKcyC+mMnqYgaMB1UelCwqR8Bm+eYWTebdisVQ39eXdP0fL5lXGtoKAAA=
 ```
 
-QR Code Inhalt
+QR code content
 
 ```
 https://eprescription.hin.ch/#CHMED16A1H4sIAAAAAAAACr2WX2/iOBDAv4rl1wtZ/yEh8LTlaHuVll1Eu620qz4YGIiV4CDHqbbb49v0M9zTvfHFbhwaWvpvV6eqgIMzGTv+zYzHc0NHymkwjvZu6NFntQTao4PCKhrQT3e3x1ZNwKKgP0A1yrvtqMV5S0gUHYOZ4bOeCOipswBeoQ/WlM6qsgTidb7pFUolYwxv/tTu+k7Hv8Is8GYG2B2lhfFvY50uSZIEG/5QfjhUOvdKuKhwUS/l4wR0udKQh9MUNU5mJe19v6Fn1yuoV3Ku/AAeyjAOedjGJriMO6FgHC9hFCby7+HB8fBwwBin68uADmHmDTD4VLohGBzsF2RhSXssoONpPf0JqrTXwbYToRilMY8uG5HYiqJOeyfid6JuZyeSTSdu1PnuWWe7FPUQhzc4XW/Kr0ajhYUf8Jg2jnbP+fpyva6h9BRdaNx2Qv8KKqSUIo5rs22nkIhabDUG7sgWCE0FE6zFui3hJx24s2JrkhMzhrK2yQD1WcgCjs3/Y7v0q98uAGMhQ/WzbDEuvTVPi9nEgjFo2oAerFYnPj5QfqYmOTgHBK5cHhJtSFakOZhyc1tZmFvQsCQXPpAsUdU83/xTggkJTjIuFI4fffFdWNXWPK0mfm2NMSlnIolrqzSk7f9L+oDyF6QDWFkoS108Ih0WdoFcpDJqkm5uzUIvCG4cMlRp/hO0Q6x9qic0URRLlryF336fpp9XLi2m6cxW0+zDX2B/7lN9fZmGPIsT0M+TkZpmD/YBJoZIdCL5lmT8l2QnZg6Ze+KmV4CeCTrZcPEdjOi2u51Evq+bRspm2pSFIR8IzuByjMAcFvto54VFpCU5naa5moMJfj8Wa1j+3A6LuiwRb5VLmsZfhR1WZQb5FdhypYyp8ADZ32jqh16qnEjyg7jN7SLX05SAxtyTLl/YZPw+KsWOLZEJa0dv5cemve7Hc4RyxWr+BKoPmvRhpuw8JDwiLSIZGWpToavI1Z1fDzFL4rZr+Dm5wI0LRKHH3ebfafaiER7lz3tj3DtaRDxm3fh9t6hPNza9dumyKh/5WLuHyHKLakiuzILwFmthC8hMGYW+v4BpWkLuz4/6GX6fDW/xNL7buJfbbfa+2C+dlZzsTkuOLq2w7tr3/b2D6et4+OrREVZPddnkbzAlwNLrozYWDTvU2ghYttWf1jOX5oPjDvCkQO1OzDgWVTIWss6C30q/duzUpSOaivvSkYkzHvek6MnkD8Z79QTjJYYc7WsP6LPRXV2KNYHKcyC+mMnqYgaMB1UelCwqR8Bm+eYWTebdisVQ39eXdP0fL5lXGtoKAAA=&i=Vorname+Nachname+%28HIN+Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-QR Code
+QR code
 
 ![Beispiel Dora Graber QRCode](./assets/Beispiel_Dora_Graber_QRCode.png)
