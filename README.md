@@ -55,7 +55,7 @@ The use of a “URL fragment” in the link ensures that the e-prescription data
 
 ### 2.1. E-prescription data in the QR code
 
-Applications that want to verify the e-prescription can do so by using the link in the QR code as the input for the [verify command](#422-verifying-an-eprescription-qr-code). Example:
+Applications that want to verify the e-prescription can do so by using the link in the QR code as the input for the [verify command](#422-verifying-an-e-prescription-qr-code). Example:
 ```
 https://eprescription.hin.ch/#CHMED16A1...AA==&q07lE0g4asrIIR9mdBgSIHUVsf9k9QIF+74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601&i=FirstName%20Surname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
@@ -424,7 +424,7 @@ ENABLE_EPRESCRIPTION=true
 ```
 
 #### 4.1.3. E-prescription JSON input
-The Certifaction CLI command generates e-prescriptions signatures for e-prescriptions based on the CHMED16A1 standard as described under [QR code specification](#2-hin-sign-e-prescription-signature-qr-code-specification).
+The Certifaction CLI command generates e-prescriptions signatures for e-prescriptions based on the CHMED16A1 standard as described under [QR code specification](#2-e-prescription-switzerland-service-qr-code-specification).
 
 #### 4.1.4. General usage
 
