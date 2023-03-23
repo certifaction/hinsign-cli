@@ -845,7 +845,7 @@ Please check the [event data section](#262-event-data) for more information abou
 
 **Usage**
 ```
-POST /ePrescription/cancel/<id>/<eventId>
+POST /ePrescription/cancel/<id>/event/<eventId>
 ```
 
 **Description**<br>
