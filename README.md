@@ -424,16 +424,7 @@ The Certifaction CLI command generates e-prescriptions signatures for e-prescrip
 
 #### 4.1.4. General usage
 
-The Certifaction CLI can be used either as a command line tool as follows, or as HTTP REST API in its server mode.
-
-```
-certifaction [certifaction flags] <command> [arguments]
-```
-
-
-Use certifaction help &lt;command> for more information about the command.
-
-Please refer to the main documentation for the list of all available global flags and about the [CLI HTTP server mode](https://github.com/certifaction/cli#http-server-mode).
+Please refer to [E-prescription endpoints](#42-e-prescription-endpoints) for the list of all available endpoints.
 
 #### 4.1.5. Authentication
 
@@ -451,16 +442,6 @@ HTTP Server Mode (Auth-Service):
 Authorization: Bearer epdg:<token>
 ```
 
-CLI Mode (OAuth via HIN ACS):
-```
---token <token>
-```
-
-CLI Mode (Auth-Service):
-```
---token <token> --epdg
-```
-
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
 
 For the creation of e-prescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
@@ -468,8 +449,6 @@ For the creation of e-prescription the elevated EPD-Level Authentication based o
 ### 4.2. E-prescription Endpoints
 
 This section describes the additional endpoints available when the e-prescription mode is enabled.
-
-Please refer to the main documentation for more information about the [CLI HTTP server mode](https://github.com/certifaction/cli#http-server-mode).
 
 When the e-prescription mode is enabled, the following new endpoints are enabled:
 
@@ -920,13 +899,6 @@ none
 
 **Test data**<br>
 Create a valid-chmed16a1.json file containing a valid CHMED16A1 data set.
-
-**Command line**<br>
-Here is the command to generate the signed e-prescription QR code:
-
-```
-ENABLE_EPRESCRIPTION=true ./certifaction ePrescription --api  https://oauth2.sign.hin.ch/api --token <token> --epdg -o test-chmed16a1.pdf -f png test-ePrescription.png
-```
 
 **Server mode**<br>
 First start the server using the following command:
