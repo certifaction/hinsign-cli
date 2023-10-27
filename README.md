@@ -344,13 +344,9 @@ For the various actions of the E-prescription Switzerland service, there are dif
   <tr valign="top">
    <td>Revoke
    </td>
-   <td>- Personal HIN eID with hardening 20
-<p>
-- Team HIN eID
+   <td>Personal HIN eID with hardening 20
    </td>
-   <td>- Auth-Service (based on SAML)
-<p>
-- OAuth via HIN ACS
+   <td>Auth-Service (based on SAML)
    </td>
    <td>HIN membership
    </td>
@@ -394,7 +390,7 @@ For the various actions of the E-prescription Switzerland service, there are dif
   </tr>
 </table>
 
-Note on the authentication with “Personal HIN eID with hardening 20”: <br>
+<i>Note on the authentication with “Personal HIN eID with hardening 20”:</i> <br>
 This authentication is done via the HIN/ADSwiss Auth-Service, which ensures that the user was a correctly identified and recently authenticated. HIN Sign also uses the person code 10 to ensure that the person is a doctor.
 
 **EPD authentication**<br>
@@ -443,16 +439,26 @@ Please refer to the main documentation for the list of all available global flag
 
 Please see chapter [Authentication and Authorisation](#32-authentication-and-authorisation).<br>
 
-When indicated, the requests must be authenticated using the Authorization header as following (an environment is provided for testing that does not enforce authentication):
+When indicated, the requests must be authenticated as following (an environment is provided for testing that does not enforce authentication):
 
-HTTP Server Mode:
+HTTP Server Mode (OAuth via HIN ACS):
 ```
-Authorization: Bearer <AccessToken>
+Authorization: Bearer acs:<token>
 ```
 
-CLI Mode:
+HTTP Server Mode (Auth-Service):
 ```
---token
+Authorization: Bearer epdg:<token>
+```
+
+CLI Mode (OAuth via HIN ACS):
+```
+--token <token>
+```
+
+CLI Mode (Auth-Service):
+```
+--token <token> --epdg
 ```
 
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
@@ -493,7 +499,7 @@ When the e-prescription mode is enabled, the following new endpoints are enabled
    </td>
   </tr>
   <tr>
-   <td>POST /ePrescription/cancel/&lt;id>/&lt;eventid>
+   <td>POST /ePrescription/cancel/&lt;id>/event/&lt;eventid>
    </td>
    <td>Registers a cancelation of an event (revoke, dispense, cancel).
    </td>
@@ -919,7 +925,7 @@ Create a valid-chmed16a1.json file containing a valid CHMED16A1 data set.
 Here is the command to generate the signed e-prescription QR code:
 
 ```
-ENABLE_EPRESCRIPTION=true ./certifaction ePrescription --api  https://oauth2.sign.hin.ch/api --token <access token> -o test-chmed16a1.pdf -f png test-ePrescription.png
+ENABLE_EPRESCRIPTION=true ./certifaction ePrescription --api  https://oauth2.sign.hin.ch/api --token <token> --epdg -o test-chmed16a1.pdf -f png test-ePrescription.png
 ```
 
 **Server mode**<br>
@@ -932,7 +938,7 @@ ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://oauth2.sign.hin.c
 Then post the e-prescription data to the /ePrescription/create endpoint as following to get the signed e-prescription QR code as response:
 
 ```
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <access token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer epdg:<token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
 A complete example commands incl. authentication can be found in [Appendix A](#a-e-prescription-authentication-and-use-case-commands).
@@ -969,17 +975,17 @@ ENABLE_EPRESCRIPTION=true certifaction server --api https://api.testnet.certifac
 1. Get Login URL
 
     ```
-    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth?targetUrl=http%3A%2F%2Flocalhost%2Fsuccess&style=redirect" --header "accept: application/json" --header "Authorization: Bearer <oauth_token_for_auth_service>"
+    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth?targetUrl=http%3A%2F%2Flocalhost%2Fsuccess&style=redirect" --header "accept: application/json" --header "Authorization: Bearer <token>"
     ```
 
 2. Resolve Code to Handle
 
     ```
-    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth/auth_handle" -d "{\"authCode\":\"<auth_code>\"}" --header "accept: application/json" --header "Content-Type: application/json" --header "Authorization: Bearer <oauth_token_for_auth_service>"
+    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth/auth_handle" -d "{\"authCode\":\"<auth_code>\"}" --header "accept: application/json" --header "Content-Type: application/json" --header "Authorization: Bearer <token>"
     ```
 
 
-3. Use handle as token in `Authorization: Bearer <token>` header for calls to CLI
+3. Use handle as token in `Authorization: Bearer epdg:<token>` header for calls to CLI
 
 
 #### ACS Authentication
@@ -1001,7 +1007,7 @@ ENABLE_EPRESCRIPTION=true certifaction server --api https://api.testnet.certifac
     curl -H 'Content-Type: application/x-www-form-urlencoded' --data 'grant_type=authorization_code&redirect_uri=&code=<AUTHORIZATION CODE>&client_id=<client_id>&client_secret=<client_secret>' https://oauth2.hin.ch/REST/v1/OAuth/GetAccessToken
     ```
 
-3. Use token in `Authorization: Bearer <token>` header for calls to CLI
+3. Use token in `Authorization: Bearer acs:<token>` header for calls to CLI
 
 
 #### Input Data
@@ -1018,7 +1024,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	Option 1: Output as Data/URL
 
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer <epd_token>" http://localhost:8082/ePrescription/create?output-format=data
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer epdg:<token>" http://localhost:8082/ePrescription/create?output-format=data
 
 	HTTP/200 OK
 		{"SignedPrescriptionData":"https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101"}
@@ -1026,7 +1032,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 	Option 2:  Output as PNG QR Code
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer &lt;epd_token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer epdg:<token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
 
 	HTTP/200 OK
 	```
@@ -1050,7 +1056,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 3. Dispense e-prescription fully
 
 	```
-	$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer <hin_acs_oauth_token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
+	$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer acs:<token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
 
 	HTTP/200 OK
 	```
@@ -1179,7 +1185,7 @@ Blister 30 Stk)
   <tr valign="top">
    <td>Pharmacy 2
    </td>
-   <td>Verifies e-prescription and sees that one dispensation has already been made -> Dispenses medicament according to prescription
+   <td>Verifies e-prescription and sees that one dispensation has already been made -> Dispenses medicament according to e-prescription
    </td>
    <td>
    </td>
