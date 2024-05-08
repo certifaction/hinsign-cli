@@ -554,11 +554,17 @@ Yes
    </td>
   </tr>
   <tr>
-   <td>404 Bad Request
+   <td>400 Bad Request
    </td>
-   <td>The input JSON could not be parsed
+   <td>Failed to parse QR code size
    </td>
   </tr>
+  <tr>
+   <td>409 Conflict
+   </td>
+   <td> Prescription already exists
+   </td>
+  </tr>	
 </table>
 
 Depending on the value of the output-format query parameter:
@@ -807,21 +813,9 @@ Please check the [event data section](#262-event-data) for more information abou
    </td>
   </tr>
   <tr>
-   <td>404 Bad Request
+   <td>400 Bad Request
    </td>
-   <td>Error while recording dispensation event
-   </td>
-  </tr>
-  <tr>
-   <td>403 Forbidden
-   </td>
-   <td>prescription has been revoked
-   </td>
-  </tr>
-  <tr>
-   <td>403 Forbidden
-   </td>
-   <td>prescription has been already fully dispensed
+   <td>Unable to parse dispensation record
    </td>
   </tr>
 </table>
@@ -879,18 +873,6 @@ none
    <td>200 OK
    </td>
    <td>Successfully recorded cancellation event
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>404 Bad Request
-   </td>
-   <td>Error while recording cancellation event if
-<ul>
-<li>Event is already canceled
-<li>Event does not exist
-<li>Event was issued by a different user
-</li>
-</ul>
    </td>
   </tr>
 </table>
