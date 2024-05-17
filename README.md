@@ -212,8 +212,9 @@ The following event types exist:<p>
    <td>Reference to the "Id" field of the CHMED16A e-prescription
    </td>
   </tr>
+	
   <tr>
-   <td>Event data
+   <td>Dispenses
    </td>
    <td>optional
    </td>
@@ -256,6 +257,15 @@ A list of medicament dispenses with the following fields:
   </tr>
 </table><p>
 *The Id is the field “Id” from the list of “Medicaments” from the CHMED16A data received as input. It does not regard the IdTypes and therefore works with all of them, assuming no collision between the different Types.</p>
+   </td>
+  </tr>
+	
+<tr>
+   <td>Event data
+   </td>
+   <td>optional
+   </td>
+   <td>
 <p>For <code>cancel</code>:
 <br>A reference to an Id of another event.</p>
 <table>
@@ -278,6 +288,7 @@ A list of medicament dispenses with the following fields:
 </table>
    </td>
   </tr>
+	
   <tr>
    <td>Timestamp
    </td>
