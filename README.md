@@ -255,6 +255,14 @@ A list of medicament dispenses with the following fields:
    <td>The Id of the substitute  / medicament*
    </td>
   </tr>
+  <tr>
+   <td>Substitute Id Type
+   </td>
+   <td>string
+   </td>
+   <td>The Id type of the substitute  / medicament
+   </td>
+  </tr>
 </table><p>
 *The Id is the field “Id” from the list of “Medicaments” from the CHMED16A data received as input. It does not regard the IdTypes and therefore works with all of them, assuming no collision between the different Types.</p>
    </td>
@@ -783,7 +791,7 @@ The input consists of the following fields:
    </td>
   </tr>
   <tr>
-   <td>Id
+   <td>id
    </td>
    <td>string
    </td>
@@ -791,11 +799,27 @@ The input consists of the following fields:
    </td>
   </tr>
   <tr>
-   <td>Amount
+   <td>amount
    </td>
    <td>int
    </td>
    <td>Amount dispensed
+   </td>
+  </tr>
+  <tr>
+   <td>substitute
+   </td>
+   <td>string
+   </td>
+   <td>Substitute medicament
+   </td>
+  </tr>
+  <tr>
+   <td>substitute_id_type
+   </td>
+   <td>int
+   </td>
+   <td>Substitute Id type
    </td>
   </tr>
 </table>
@@ -803,11 +827,11 @@ The input consists of the following fields:
 
 **Example Request**
 
-```
+```json
 [
       {
-         "Id":"2333266",
-         "Amount":1,
+         "id":"2333266",
+         "amount":1
       }
 ]
 ```
