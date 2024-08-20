@@ -677,8 +677,7 @@ The verification information consists of the following information:
          "actor_name":"Pharmacist 1",
          "signature": "eyJhbGciOiJFUzM4NCIsIng1YyI6WyJNSUlDR2pDQ0FjQ2dBd0lCQWdJVVhBMFpPMzVscnpYdVdJKzI4OFAzWVdLbnJ3b3dDZ1lJS29aSXpqMEVBd0l3R2pFWU1CWUdBMVVFQXhNUFEyVnlkR2xtWVdOMGFXOXVJRUZITUI0WERUSTBNRGd4TmpFek5UY3pOMW9YRFRJME1EZ3hOakUwTURnd04xb3diVEVRTUE0R0ExVUVCZ3dIV3NPOGNtbGphREVYTUJVR0ExVUVDUk1PVEdsdGJXRjBjWFZoYVNBeE1qQXhEVEFMQmdOVkJCRVRCRGd3TURFeEdEQVdCZ05WQkFvVEQwTmxjblJwWm1GamRHbHZiaUJCUnpFWE1CVUdBMVVFQXhNT1UzUmxjR2hoYmlCQ1lXeDZaWEl3ZGpBUUJnY3Foa2pPUFFJQkJnVXJnUVFBSWdOaUFBUWdGQjYzeWRqRXhTQ3Z2ejl2Z2hBenl6Nmh5VnN4NTUrOVN6RTJORDNNZXhKQXN0QXhya28zekhaV25rUW16ZW1BVG1JWEJmTXJlRWNEbDdJNUVhYWpiWGF5WnRzRzVTQ2ZwK3Fya01...",
          "hash": "5514842c6c8a86f88fd5f78037c77603ad67532bdd92334112e0ecf89f7742b3",
-         "parent_hash": "c2c9350309b99f9867f4c929ac22725cfe8f08719725ff6005d30aa085f4f4f6",
-         "prescription_hash": ""
+         "parent_hash": "c2c9350309b99f9867f4c929ac22725cfe8f08719725ff6005d30aa085f4f4f6"
       }
    ]
 }
@@ -687,7 +686,23 @@ The verification information consists of the following information:
 Verification will fail if the system detects that the prescription has been tampered.
 
 Each prescription action (create, cancel, revoke, dispense) is recorded in the event log.
-Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field.
+Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field, as in
+
+```json
+{
+    "id": "c41041ec-a413-4ae5-84a1-900a2e8070a2",
+    "type": "create",
+    "reference": "50bb9198-d2ac-4c49-a0c-6sasa42f301-2024-08-16-1",
+    "event_data": {},
+    "timestamp": "2024-08-16T13:12:12.677794352Z",
+    "actor": "HIN|pharma1",
+    "actor_name": "Pharmacist 1",
+    "cancellable": false,
+    "hash": "aa9f0e8855bc25a5b45b5150e900cdde226ab0cccf31503d4a08783e7d46ec6b",
+    "signature": "<snip>",
+    "prescription_hash": "0x826ce404e00eddcaacb1019a4f759216cecca4ed9a6a16cc2d16e35d4a9e76bd"
+}
+```
 
 On verification, we check the following.
 
