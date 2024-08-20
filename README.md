@@ -140,7 +140,7 @@ The audit log does not contain any e-prescription data, with the exception of it
 
 ### 2.6. Events
 
-Events record the lifecycle of an e-prescription. 
+Events record the lifecycle of an e-prescription.
 
 #### 2.6.1. Event types
 
@@ -212,7 +212,7 @@ The following event types exist:<p>
    <td>Reference to the "Id" field of the CHMED16A e-prescription
    </td>
   </tr>
-	
+
   <tr>
    <td>Dispenses
    </td>
@@ -267,7 +267,7 @@ A list of medicament dispenses with the following fields:
 *The Id is the field “Id” from the list of “Medicaments” from the CHMED16A data received as input. It does not regard the IdTypes and therefore works with all of them, assuming no collision between the different Types.</p>
    </td>
   </tr>
-	
+
 <tr>
    <td>Event data
    </td>
@@ -296,7 +296,7 @@ A list of medicament dispenses with the following fields:
 </table>
    </td>
   </tr>
-	
+
   <tr>
    <td>Timestamp
    </td>
@@ -583,7 +583,7 @@ Yes
    </td>
    <td> Prescription already exists
    </td>
-  </tr>	
+  </tr>
 </table>
 
 Depending on the value of the output-format query parameter:
@@ -648,16 +648,16 @@ The verification information consists of the following information:
    </td>
   </tr>
   <tr valign="top">
-   <td>Dispensations
+   <td>Dispenses
    </td>
-   <td>If available, an array containing each Medicament with a recorded Dispensation event and a list of those events
+   <td>If available, an array containing each Medicament with a recorded dispense event and a list of those events
    </td>
   </tr>
 </table>
 
 **Example Response**
 
-```
+```json
 {
    "prescription_id":"00000000-0000-0000-0000-000000000000",
    "issued_at":"0000-00-00T00:00:00+00:00",
@@ -674,11 +674,31 @@ The verification information consists of the following information:
          "reference":"00000000-0000-0000-0000-000000000000",
          "timestamp":"0000-00-00T00:00:00.000000000Z",
          "actor":"pharma1",
-	 "actor_name":"Pharmacist 1"
+	     "actor_name":"Pharmacist 1",
+         "signature": "eyJhbGciOiJFUzM4NCIsIng1YyI6WyJNSUlDR2pDQ0FjQ2dBd0lCQWdJVVhBMFpPMzVscnpYdVdJKzI4OFAzWVdLbnJ3b3dDZ1lJS29aSXpqMEVBd0l3R2pFWU1CWUdBMVVFQXhNUFEyVnlkR2xtWVdOMGFXOXVJRUZITUI0WERUSTBNRGd4TmpFek5UY3pOMW9YRFRJME1EZ3hOakUwTURnd04xb3diVEVRTUE0R0ExVUVCZ3dIV3NPOGNtbGphREVYTUJVR0ExVUVDUk1PVEdsdGJXRjBjWFZoYVNBeE1qQXhEVEFMQmdOVkJCRVRCRGd3TURFeEdEQVdCZ05WQkFvVEQwTmxjblJwWm1GamRHbHZiaUJCUnpFWE1CVUdBMVVFQXhNT1UzUmxjR2hoYmlCQ1lXeDZaWEl3ZGpBUUJnY3Foa2pPUFFJQkJnVXJnUVFBSWdOaUFBUWdGQjYzeWRqRXhTQ3Z2ejl2Z2hBenl6Nmh5VnN4NTUrOVN6RTJORDNNZXhKQXN0QXhya28zekhaV25rUW16ZW1BVG1JWEJmTXJlRWNEbDdJNUVhYWpiWGF5WnRzRzVTQ2ZwK3Fya01...",
+         "hash": "5514842c6c8a86f88fd5f78037c77603ad67532bdd92334112e0ecf89f7742b3",
+         "parent_hash": "c2c9350309b99f9867f4c929ac22725cfe8f08719725ff6005d30aa085f4f4f6",
+         "prescription_hash": ""
       }
    ]
 }
 ```
+
+Verification will fail if the system detects that the prescription has been tampered.
+
+Each prescription action (create, cancel, revoke, dispense) is recorded in the event log.
+Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field.
+
+On verification, we check the following.
+
+1. The prescription's signature is valid for the prescription signing public key.
+2. The `create` event's `prescription_hash` field matches the hash of the prescription.
+3. The event chain has not been altered. We recalculate the events chain and compare it against both the last event and the audit log.
+4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate authority that we control.
+
+If any of these checks fail, the verification fails.
+
+NOTE: the tampering checks are currently opt-in. To enable them, set the `ENABLE_EPRESCRIPTION_TAMPERING_CHECKS` environment variable to `true` when running the program.
 
 #### 4.2.3. Revoking an e-prescription QR Code
 
@@ -1054,7 +1074,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 	```
 	$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
-	
+
 	HTTP/200 OK
 	{
 	   "prescription_id":"00000000-0000-0000-0000-000000000000",
