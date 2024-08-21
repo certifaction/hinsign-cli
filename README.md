@@ -707,8 +707,8 @@ Each prescription action (create, cancel, revoke, dispense) is recorded as an ev
 
 On verification, we check the following.
 
-1. The prescription's signature is valid for the prescription signing public key.
-2. The `create` event's `prescription_hash` field matches the hash of the prescription.
+1. The prescription's signature is valid for the prescription signing public key. This ensures that the QR code/URL data content (CHMED16A1 ePrescription data and signature) have not been modified.
+2. The `create` event's `prescription_hash` field matches the hash of the CHMED16A1 ePrescription data.
 3. The event chain has not been altered. We recalculate the events chain and compare it against both the last event and the audit log.
 4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate authority that we control.
 
