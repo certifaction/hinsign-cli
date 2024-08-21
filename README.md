@@ -683,10 +683,11 @@ The verification information consists of the following information:
 }
 ```
 
-Verification will fail if the system detects that the prescription has been tampered.
+##### 4.2.2.1. Tampering detection
 
-Each prescription action (create, cancel, revoke, dispense) is recorded in the event log.
-Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field, as in
+Verification will fail if the system detects that the prescription has been tampered. Here is how we detect tampering, briefly.
+
+Each prescription action (create, cancel, revoke, dispense) is recorded as an event in the event log. Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field, as in
 
 ```json
 {
