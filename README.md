@@ -685,7 +685,7 @@ The verification information consists of the following information:
 
 ##### 4.2.2.1. Tampering detection
 
-Verification will fail if the system detects that the prescription has been tampered. Here is how we detect tampering, briefly.
+Verification will fail if the system detects that the prescription has been tampered with.
 
 Each prescription action (create, cancel, revoke, dispense) is recorded as an event in the event log. Each event is signed with a short-term key pair and the signature is stored in the event's `signature` field in [JSON Web Signature (JWS) format](https://www.rfc-editor.org/rfc/rfc7515). The hash of the event, which includes the hash of the preceding event, is stored in the audit log. The first event in a prescription (the `create` event) also stores a hash of the prescription in the `prescription_hash` field, as in
 
@@ -707,14 +707,13 @@ Each prescription action (create, cancel, revoke, dispense) is recorded as an ev
 
 On verification, we check the following.
 
-1. The prescription's signature is valid for the prescription signing public key. This ensures that the QR code/URL data content (CHMED16A1 ePrescription data and signature) have not been modified.
-2. The `create` event's `prescription_hash` field matches the hash of the CHMED16A1 ePrescription data.
+1. The prescription's signature is validated against the public key. This ensures that the QR code/URL data content (CHMED16A1 E-Prescription data and signature) have not been modified.
+2. The `create` event's `prescription_hash` field matches the hash of the CHMED16A1 E-Prescription data.
 3. The event chain has not been altered. We recalculate the events chain and compare it against both the last event and the audit log.
-4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate authority that we control.
+4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate.
 
 If any of these checks fail, the verification fails.
 
-NOTE: the tampering checks are currently opt-in. To enable them, set the `ENABLE_EPRESCRIPTION_TAMPERING_CHECKS` environment variable to `true` when running the program.
 
 #### 4.2.3. Revoking an e-prescription QR Code
 
