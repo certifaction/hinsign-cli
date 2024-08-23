@@ -648,9 +648,9 @@ The verification information consists of the following information:
    </td>
   </tr>
   <tr valign="top">
-   <td>Dispenses
+   <td>Events
    </td>
-   <td>If available, an array containing each Medicament with a recorded dispense event and a list of those events
+   <td>If available, an array containing events corresponding to each action carried out on the prescription.
    </td>
   </tr>
 </table>
@@ -708,9 +708,9 @@ Each prescription action (create, cancel, revoke, dispense) is recorded as an ev
 On verification, we check the following.
 
 1. The prescription's signature is validated against the public key. This ensures that the QR code/URL data content (CHMED16A1 E-Prescription data and signature) have not been modified.
-2. The `create` event's `prescription_hash` field matches the hash of the CHMED16A1 E-Prescription data.
+2. The `create` event's `prescription_hash` field matches the hash of the CHMED16A1 E-Prescription data. This prevents an attacker in possession of our prescription signing key from hijacking another prescription.
 3. The event chain has not been altered. We recalculate the events chain and compare it against both the last event and the audit log.
-4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate.
+4. Each event signature is authentic. We check that each event's signing certificate links to a known root certificate. This asserts that the prescription was signed by us. If it was not signed by us, we reject it.
 
 If any of these checks fail, the verification fails.
 
