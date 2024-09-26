@@ -632,19 +632,19 @@ The verification information consists of the following information:
   <tr>
    <td>Valid
    </td>
-   <td>True if the QR code is correctly signed and not tampered with
+   <td>True if the prescription is correctly signed and not tampered with
    </td>
   </tr>
   <tr>
    <td>Revoked
    </td>
-   <td>True if the QR code has been marked as revoked
+   <td>True if the prescription has been marked as revoked
    </td>
   </tr>
   <tr>
    <td>Dispensed
    </td>
-   <td>True if the QR code has been marked as fully dispensed
+   <td>True if the prescription has been marked as fully dispensed
    </td>
   </tr>
   <tr valign="top">
