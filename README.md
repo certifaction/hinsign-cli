@@ -491,6 +491,18 @@ When the e-prescription mode is enabled, the following new endpoints are enabled
    </td>
   </tr>
   <tr>
+   <td>POST /ePrescription/lock/&lt;id>
+   </td>
+   <td>Temporarily lock e-prescription to prevent any action on it. It must then be unlocked before any other action can be taken.
+   </td>
+  </tr>
+  <tr>
+   <td>POST /ePrescription/unlock/&lt;id>
+   </td>
+   <td>Unlock a locked e-prescription.
+   </td>
+  </tr>
+  <tr>
    <td>POST /ePrescription/dispense/&lt;id>
    </td>
    <td>Registers a full or partial dispensation for a signed e-prescription.
@@ -911,6 +923,60 @@ none
    </td>
   </tr>
 </table>
+
+#### 4.2.6. Locking an e-prescription
+
+**Usage**
+```
+POST /ePrescription/lock/<id>
+```
+
+**Description**<br>
+Locks an e-prescription to prevent it from being dispensed or revoked, or any of its events cancelled.
+
+**Authenticated**<br>
+Yes
+
+**Query parameters**
+
+| Parameter | Value | Description                               |
+|:----------|:------|:------------------------------------------|
+| reason    |       | The reason for locking the e-prescription |
+
+
+**Request Body**<br>
+none
+
+**Response**
+
+200 OK — Successfully locked the e-prescription.
+
+#### 4.2.6. Unlocking an e-prescription
+
+**Usage**
+```
+POST /ePrescription/unlock/<id>
+```
+
+**Description**<br>
+Unlocks a locked e-prescription.
+
+**Authenticated**<br>
+Yes
+
+**Query parameters**
+
+| Parameter | Value | Description                                 |
+|:----------|:------|:--------------------------------------------|
+| reason    |       | The reason for unlocking the e-prescription |
+
+
+**Request Body**<br>
+none
+
+**Response**
+
+200 OK — Successfully unlocked the e-prescription.
 
 ### 4.3. Example API Call
 
