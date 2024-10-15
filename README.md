@@ -169,6 +169,14 @@ Events record the lifecycle of an e-prescription.
    <td>An event (Revoke, Partial dispense, Full dispense, Cancel) is cancelled.
    </td>
   </tr>
+  <tr>
+    <td>Lock</td>
+    <td>The e-prescription was temporarily locked.</td>
+  </tr>
+  <tr>
+    <td>Ulnock</td>
+    <td>The e-prescription was unlocked.</td>
+  </tr>
 </table>
 
 #### 2.6.2. Event data
@@ -201,7 +209,7 @@ Revocations, (partial) dispensations and cancellations contain the following dat
 <p>
 The following event types exist:<p>
 <p>
-<code>revoke | partial_dispense | full_dispense | cancel</code><p>
+<code>revoke | partial_dispense | full_dispense | cancel | lock | unlock</code><p>
    </td>
   </tr>
   <tr>
@@ -640,32 +648,16 @@ A signed e-prescription QR Code in its string form.
 **Response**<br>
 The verification information consists of the following information:
 
-<table>
-  <tr>
-   <td>Valid
-   </td>
-   <td>True if the QR code is correctly signed and not tampered with
-   </td>
-  </tr>
-  <tr>
-   <td>Revoked
-   </td>
-   <td>True if the QR code has been marked as revoked
-   </td>
-  </tr>
-  <tr>
-   <td>Dispensed
-   </td>
-   <td>True if the QR code has been marked as fully dispensed
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Dispensations
-   </td>
-   <td>If available, an array containing each Medicament with a recorded Dispensation event and a list of those events
-   </td>
-  </tr>
-</table>
+| Field         | Description                                                                                                     |
+|---------------|-----------------------------------------------------------------------------------------------------------------|
+| Valid         | True if the QR code is correctly signed and not tampered with                                                   |
+| Revoked       | True if the QR code has been marked as revoked                                                                  |
+| Dispensed     | True if the QR code has been marked as fully dispensed                                                          |
+| Dispensations | If available, an array containing each Medicament with a recorded Dispensation event and a list of those events |
+| Locked        | True if the e-prescription is currently locked.                                                                 |
+| Locked at     | The time at which the e-prescription was locked.                                                                |
+| Lock reason   | The reason for the e-prescription lock. This is available to authenticated actors only.                         |
+| Unlock reason | The reason for unlocking the e-prescription. This is available to authenticated actors only                     |
 
 **Example Response**
 
@@ -679,6 +671,7 @@ The verification information consists of the following information:
    "dispensed":true,
    "dispensed_at":"0000-00-00T00:00:00.000000000Z",
    "dispensed_by":"HIN|pharma1",
+   "locked": false,
    "events":[
       {
          "id":"00000000-0000-0000-0000-000000000000",
