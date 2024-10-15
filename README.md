@@ -693,7 +693,7 @@ POST /ePrescription/revoke/<id>
 ```
 
 **Description**<br>
-Invalidate a signed e-prescription QR code by registering it as revoked
+Invalidate a signed e-prescription QR code by registering it as revoked. Revocations are final: a revoke event cannot be cancelled, and no further actions can be taken on the e-prescription except verifying it.
 
 **Authenticated**<br>
 Yes
