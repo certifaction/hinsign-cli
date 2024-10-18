@@ -1,34 +1,34 @@
 
-# Integration guide: E-prescription Switzerland service
+# Integration guide: E-Prescription Switzerland service
 
-## 1. E-prescription Switzerland service
+## 1. E-Prescription Switzerland service
 
-**The secure digital e-prescription for the Swiss healthcare sector**
+**The secure digital E-Prescription for the Swiss healthcare sector**
 
-The E-prescription Switzerland service enables doctors to issue digital prescriptions – easily and in accordance with the law. The QR code enables pharmacies to record and validate them automatically. This means that processes in doctor's practices and pharmacies are more secure and more efficient. The E-prescription Switzerland service is a functionality of HIN Sign. The use of this service is linked to HIN membership.
+The E-Prescription Switzerland service enables doctors to issue digital prescriptions – easily and in accordance with the law. The QR code enables pharmacies to record and validate them automatically. This means that processes in doctor's practices and pharmacies are more secure and more efficient. The E-Prescription Switzerland service is a functionality of HIN Sign. The use of this service is linked to HIN membership.
 
 ![eRezept Erklärungsskizze](./assets/hin-e-rezept-erklaerungsskizze-en-orange.jpg)
 
 **Use cases**
 
-The E-prescription Switzerland service includes the following use cases for doctors and pharmacists:
+The E-Prescription Switzerland service includes the following use cases for doctors and pharmacists:
 
-* Signing e-prescriptions
-* Verifying e-prescriptions
-* Revoking e-prescriptions
-* (Partial) dispensing of e-prescriptions
+* Signing E-Prescriptions
+* Verifying E-Prescriptions
+* Revoking E-Prescriptions
+* (Partial) dispensing of E-Prescriptions
 * Cancelling these actions
 
-### 1.2. Integration of the E-prescription Switzerland service
+### 1.2. Integration of the E-Prescription Switzerland service
 
-**E-prescription as part of HIN Sign**
+**E-Prescription as part of HIN Sign**
 
-The E-prescription Switzerland service is part of the HIN Sign service and is therefore available via the same integration. The component only needs to be integrated once and can be used to sign documents and/or e-prescriptions.
+The E-Prescription Switzerland service is part of the HIN Sign service and is therefore available via the same integration. The component only needs to be integrated once and can be used to sign documents and/or E-Prescriptions.
 
 For integrators, this means:
 
-* An existing or new "HIN Sign document signature"-integration can also make use of the e-prescription functionality.
-* An existing or new "E-prescription Switzerland service"-integration can also be used to sign documents.
+* An existing or new "HIN Sign document signature"-integration can also make use of the E-Prescription functionality.
+* An existing or new "E-Prescription Switzerland service"-integration can also be used to sign documents.
 
 The HIN Sign document signature can be used to sign documents, which don't require a handwritten signature by law. Examples:
 
@@ -38,33 +38,33 @@ The HIN Sign document signature can be used to sign documents, which don't requi
 * Clinical findings
 * Forms
 
-## 2. E-prescription Switzerland service: QR code specification
+## 2. E-Prescription Switzerland service: QR code specification
 
-The E-prescription Switzerland service QR code contains the e-prescription data in machine-readable form, as well as an electronic signature.
+The E-Prescription Switzerland service QR code contains the E-Prescription data in machine-readable form, as well as an electronic signature.
 
 The QR Code contains:
 
-1. A link to the e-prescription information page
-2. The e-prescription data in CHMED16A1 format
+1. A link to the E-Prescription information page
+2. The E-Prescription data in CHMED16A1 format
 3. The signature data for verification
 
 ![eRezept QRCode URL](./assets/eRezept_QRCode_URL_EN.svg)
 
-The use of a “URL fragment” in the link ensures that the e-prescription data is only available locally and is not sent to a server.
+The use of a “URL fragment” in the link ensures that the E-Prescription data is only available locally and is not sent to a server.
 
 
-### 2.1. E-prescription data in the QR code
+### 2.1. E-Prescription data in the QR code
 
-Applications that want to verify the e-prescription can do so by using the link in the QR code as the input for the [verify command](#422-verifying-an-e-prescription-qr-code). Example:
+Applications that want to verify the E-Prescription can do so by using the link in the QR code as the input for the [verify command](#422-verifying-an-E-Prescription-qr-code). Example:
 ```
 https://eprescription.hin.ch/#CHMED16A1...AA==&q07lE0g4asrIIR9mdBgSIHUVsf9k9QIF+74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601&i=FirstName%20Surname%20%28HIN%20Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-The e-prescription data is located in the link in the QR code between the "#" and the "&". It is based on the <a href="https://drive.google.com/file/d/1Suyfb4I5WuII-XBqGuHLPocUIQ5mkTjA/view" target="_blank">CHMED16A specification</a>. Because the link should be as short as possible, only the compressed variant CHMED16A1 should be used.
+The E-Prescription data is located in the link in the QR code between the "#" and the "&". It is based on the <a href="https://drive.google.com/file/d/1Suyfb4I5WuII-XBqGuHLPocUIQ5mkTjA/view" target="_blank">CHMED16A specification</a>. Because the link should be as short as possible, only the compressed variant CHMED16A1 should be used.
 
 ### 2.2. QR code signature
 
-The QR code signature ensures the integrity and authenticity of the e-prescription and enables it to be verified. A key pair is used to save space. The signature is about 250 to 300 characters in length.
+The QR code signature ensures the integrity and authenticity of the E-Prescription and enables it to be verified. A key pair is used to save space. The signature is about 250 to 300 characters in length.
 
 The signature contains:
 
@@ -79,7 +79,7 @@ Example:
 
 ### 2.3. Key management
 
-An ECDSA key is used for the signature. It is stored and managed on a secure access-controlled server. The key can be rotated or renewed if necessary. To ensure that past e-prescriptions remain valid during and after a rotation, a list of all valid keys is kept.
+An ECDSA key is used for the signature. It is stored and managed on a secure access-controlled server. The key can be rotated or renewed if necessary. To ensure that past E-Prescriptions remain valid during and after a rotation, a list of all valid keys is kept.
 
 ### 2.4. Audit log
 
@@ -87,14 +87,14 @@ Every action triggers an entry in a HIN Sign audit log. It contains the followin
 
 * Type of action (signature, revocation, dispensation, cancellation)
 * Action data
-	* E-prescription ID
+	* E-Prescription ID
 	* Any other action parameters
 * Actor (user identity)
 * Timestamp of action
 
-The audit log should ensure that the use of the service is transparent. The audit log can also be used to identify and correct any misuse. The corrections can be done in bulk. However, they are limited to the revoking of wrongly issued e-prescriptions.
+The audit log should ensure that the use of the service is transparent. The audit log can also be used to identify and correct any misuse. The corrections can be done in bulk. However, they are limited to the revoking of wrongly issued E-Prescriptions.
 
-The audit log does not contain any e-prescription data, with the exception of its ID.
+The audit log does not contain any E-Prescription data, with the exception of its ID.
 
 ### 2.5. Rules
 
@@ -108,19 +108,19 @@ The audit log does not contain any e-prescription data, with the exception of it
   <tr valign="top">
    <td>Create
    </td>
-   <td>- CHMED16A e-prescription ID must be a randomly generated ID, according to the UUID standard<br>- CHMED16A e-prescription ID must be unique and not issued yet
+   <td>- CHMED16A E-Prescription ID must be a randomly generated ID, according to the UUID standard<br>- CHMED16A E-Prescription ID must be unique and not issued yet
    </td>
   </tr>
   <tr valign="top">
    <td>Revoke
    </td>
-   <td>CHMED16A e-prescription ID must exist
+   <td>CHMED16A E-Prescription ID must exist
    </td>
   </tr>
   <tr valign="top">
    <td>Dispense
    </td>
-   <td>- CHMED16A e-prescription ID must exist<br>- CHMED16A e-prescription ID must not have been revoked<br>- If the CHMED16A e-prescription ID was fully dispensed, further dispensations must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-e-prescription-dispensation">4.2.4. Recording an e-prescription Dispensation</a>)
+   <td>- CHMED16A E-Prescription ID must exist<br>- CHMED16A E-Prescription ID must not have been revoked<br>- If the CHMED16A E-Prescription ID was fully dispensed, further dispensations must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-E-Prescription-dispensation">4.2.4. Recording an E-Prescription Dispensation</a>)
    </td>
   </tr>
   <tr valign="top">
@@ -140,7 +140,7 @@ The audit log does not contain any e-prescription data, with the exception of it
 
 ### 2.6. Events
 
-Events record the lifecycle of an e-prescription. 
+Events record the lifecycle of an E-Prescription. 
 
 #### 2.6.1. Event types
 
@@ -148,19 +148,19 @@ Events record the lifecycle of an e-prescription.
   <tr>
    <td>Revoke
    </td>
-   <td>The e-prescription is marked as void and is not valid anymore. This has nothing to do with dispensations and should only be used for wrongly issued e-prescriptions.
+   <td>The E-Prescription is marked as void and is not valid anymore. This has nothing to do with dispensations and should only be used for wrongly issued E-Prescriptions.
    </td>
   </tr>
   <tr>
    <td>Partial dispense
    </td>
-   <td>One or multiple prescribed medicaments are dispensed. The e-prescription still contains medicaments that were not dispensed. Partial dispenses of revoked e-prescriptions are not allowed. Partial dispenses of fully dispensed e-prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-e-prescription-dispensation">4.2.4. Recording an e-prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
+   <td>One or multiple prescribed medicaments are dispensed. The E-Prescription still contains medicaments that were not dispensed. Partial dispenses of revoked E-Prescriptions are not allowed. Partial dispenses of fully dispensed E-Prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-E-Prescription-dispensation">4.2.4. Recording an E-Prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
    </td>
   </tr>
   <tr>
    <td>Full dispense
    </td>
-   <td>The e-prescription or all medicaments contained in it are  dispensed. If all medicaments contained in the e-prescription have been dispensed through partial dispense, a full dispense must be made afterwards (this is not done automatically). Dispenses of revoked e-prescriptions are not allowed. Full dispenses of fully dispensed e-prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-e-prescription-dispensation">4.2.4. Recording an e-prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
+   <td>The E-Prescription or all medicaments contained in it are  dispensed. If all medicaments contained in the E-Prescription have been dispensed through partial dispense, a full dispense must be made afterwards (this is not done automatically). Dispenses of revoked E-Prescriptions are not allowed. Full dispenses of fully dispensed E-Prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-E-Prescription-dispensation">4.2.4. Recording an E-Prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
    </td>
   </tr>
   <tr>
@@ -171,11 +171,11 @@ Events record the lifecycle of an e-prescription.
   </tr>
   <tr>
     <td>Lock</td>
-    <td>The e-prescription was temporarily locked.</td>
+    <td>The E-Prescription is locked.</td>
   </tr>
   <tr>
-    <td>Ulnock</td>
-    <td>The e-prescription was unlocked.</td>
+    <td>Unlock</td>
+    <td>The E-Prescription is unlocked.</td>
   </tr>
 </table>
 
@@ -217,7 +217,7 @@ The following event types exist:<p>
    </td>
    <td>mandatory
    </td>
-   <td>Reference to the "Id" field of the CHMED16A e-prescription
+   <td>Reference to the "Id" field of the CHMED16A E-Prescription
    </td>
   </tr>
 	
@@ -331,19 +331,19 @@ A list of medicament dispenses with the following fields:
   </tr>
 </table>
 
-The event data is hosted in anonymised form (without the content of the e-prescription and without patient information) by HIN in Switzerland.
+The event data is hosted in anonymised form (without the content of the E-Prescription and without patient information) by HIN in Switzerland.
 
-## 3. Integration of the E-prescription Switzerland service
+## 3. Integration of the E-Prescription Switzerland service
 
 ### 3.1 Architecture
 
-Issuing systems (PIS/KIS) integrate the E-prescription Switzerland service via the CLI, as shown in the diagram below. Patient and e-prescription data remains local and is never sent to HIN.
+Issuing systems (PIS/KIS) integrate the E-Prescription Switzerland service via the CLI, as shown in the diagram below. Patient and E-Prescription data remains local and is never sent to HIN.
 
 ![Architektur HIN Sign eRezept Service](./assets/Architektur_HIN_Sign_eRezept_Service.svg)
 
 ### 3.2 Authentication and authorisation
 
-For the various actions of the E-prescription Switzerland service, there are different requirements regarding the strength of authentication and authorisation.
+For the various actions of the E-Prescription Switzerland service, there are different requirements regarding the strength of authentication and authorisation.
 
 **Overview**
 
@@ -421,37 +421,37 @@ For the various actions of the E-prescription Switzerland service, there are dif
 This authentication is done via the HIN/ADSwiss Auth-Service, which ensures that the user was a correctly identified and recently authenticated. HIN Sign also uses the person code 10 to ensure that the person is a doctor.
 
 **EPD authentication**<br>
-The issuance of e-prescriptions requires authentication on EPD level. The HIN/ADSwiss Auth-Service is used for this, as per the diagram below:
+The issuance of E-Prescriptions requires authentication on EPD level. The HIN/ADSwiss Auth-Service is used for this, as per the diagram below:
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
-## 4. HIN Sign API for e-prescription signature
+## 4. HIN Sign API for E-Prescription signature
 
 ### 4.1. Introduction
 
-This section is an addendum to the [Certifaction CLI](https://github.com/certifaction/cli) documentation in the context of creating, revoking, redeeming and verifying e-prescription QR codes.
+This section is an addendum to the [Certifaction CLI](https://github.com/certifaction/cli) documentation in the context of creating, revoking, redeeming and verifying E-Prescription QR codes.
 
 Please refer to the main documentation for a general description of the Certifaction CLI.
 
 #### 4.1.1. CLI Version
 
-The e-prescription functionality is available from version v1.0.x and above.
+The E-Prescription functionality is available from version v1.0.x and above.
 
 The binary can be downloaded <a href="https://github.com/certifaction/hinsign-cli/releases" target="_blank">here</a>.
 
-#### 4.1.2. How to activate the e-prescription functionality
+#### 4.1.2. How to activate the E-Prescription functionality
 
-To unlock the specific e-prescription commands and HTTP endpoints, you will need to define the following environment variables:
+To unlock the specific E-Prescription commands and HTTP endpoints, you will need to define the following environment variables:
 ```
 ENABLE_EPRESCRIPTION=true
 ```
 
-#### 4.1.3. E-prescription JSON input
-The Certifaction CLI command generates e-prescriptions signatures for e-prescriptions based on the CHMED16A1 standard as described under [QR code specification](#2-e-prescription-switzerland-service-qr-code-specification).
+#### 4.1.3. E-Prescription JSON input
+The Certifaction CLI command generates E-Prescriptions signatures for E-Prescriptions based on the CHMED16A1 standard as described under [QR code specification](#2-E-Prescription-switzerland-service-qr-code-specification).
 
 #### 4.1.4. General usage
 
-Please refer to [E-prescription endpoints](#42-e-prescription-endpoints) for the list of all available endpoints.
+Please refer to [E-Prescription endpoints](#42-E-Prescription-endpoints) for the list of all available endpoints.
 
 #### 4.1.5. Authentication
 
@@ -471,49 +471,49 @@ Authorization: Bearer epdg:<token>
 
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
 
-For the creation of e-prescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
+For the creation of E-Prescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
 
-### 4.2. E-prescription Endpoints
+### 4.2. E-Prescription Endpoints
 
-This section describes the additional endpoints available when the e-prescription mode is enabled.
+This section describes the additional endpoints available when the E-Prescription mode is enabled.
 
-When the e-prescription mode is enabled, the following new endpoints are enabled:
+When the E-Prescription mode is enabled, the following new endpoints are enabled:
 
 <table>
   <tr>
    <td>POST /ePrescription/create
    </td>
-   <td>Return a signed e-prescription QR code from the valid JSON document provided in the body.
+   <td>Return a signed E-Prescription QR code from the valid JSON document provided in the body.
    </td>
   </tr>
   <tr>
    <td>POST /ePrescription/verify
    </td>
-   <td>Return verification information about a signed e-prescription QR code provided in the body.
+   <td>Return verification information about a signed E-Prescription QR code provided in the body.
    </td>
   </tr>
   <tr>
    <td>POST /ePrescription/revoke/&lt;id>
    </td>
-   <td>Invalidate a signed e-prescription QR code by registering it as revoked.
+   <td>Invalidate a signed E-Prescription QR code by registering it as revoked.
    </td>
   </tr>
   <tr>
    <td>POST /ePrescription/lock/&lt;id>
    </td>
-   <td>Temporarily lock e-prescription to prevent any action on it. It must then be unlocked before any other action can be taken.
+   <td>Lock the E-Prescription to prevent any action on it. It must be unlocked before any other action can be done
    </td>
   </tr>
   <tr>
    <td>POST /ePrescription/unlock/&lt;id>
    </td>
-   <td>Unlock a locked e-prescription.
+   <td>Unlock a locked E-Prescription.
    </td>
   </tr>
   <tr>
    <td>POST /ePrescription/dispense/&lt;id>
    </td>
-   <td>Registers a full or partial dispensation for a signed e-prescription.
+   <td>Registers a full or partial dispensation for a signed E-Prescription.
    </td>
   </tr>
   <tr>
@@ -526,7 +526,7 @@ When the e-prescription mode is enabled, the following new endpoints are enabled
 
 The HTTP endpoints directly mirror the CLI commands.
 
-#### 4.2.1. Creating an e-prescription QR Code
+#### 4.2.1. Creating an E-Prescription QR Code
 
 **Usage**
 ```
@@ -534,7 +534,7 @@ POST /ePrescription/create
 ```
 
 **Description**<br>
-Generate a signed e-prescription QR code from a valid input JSON document in the body.  The available output formats are the following:
+Generate a signed E-Prescription QR code from a valid input JSON document in the body.  The available output formats are the following:
 
 * a QR Code image binary data in PNG format, or
 * the signed QR Code data as string
@@ -618,7 +618,7 @@ Depending on the value of the output-format query parameter:
   <tr>
    <td>image/png
    </td>
-   <td>The signed e-prescription QR Code image as a PNG
+   <td>The signed E-Prescription QR Code image as a PNG
    </td>
   </tr>
   <tr>
@@ -629,7 +629,7 @@ Depending on the value of the output-format query parameter:
   </tr>
 </table>
 
-#### 4.2.2. Verifying an e-prescription QR Code
+#### 4.2.2. Verifying an E-Prescription QR Code
 
 **Usage**
 ```
@@ -637,27 +637,27 @@ POST /ePrescription/verify
 ```
 
 **Description**<br>
-Returns verification information about a signed e-prescription QR code provided in the body.
+Returns verification information about a signed E-Prescription QR code provided in the body.
 
 **Authenticated**<br>
 No
 
 **Request Body**<br>
-A signed e-prescription QR Code in its string form.
+A signed E-Prescription QR Code in its string form.
 
 **Response**<br>
 The verification information consists of the following information:
 
 | Field         | Description                                                                                                     |
 |---------------|-----------------------------------------------------------------------------------------------------------------|
-| Valid         | True if the QR code is correctly signed and not tampered with                                                   |
-| Revoked       | True if the QR code has been marked as revoked                                                                  |
-| Dispensed     | True if the QR code has been marked as fully dispensed                                                          |
+| Valid         | True if the E-Prescription is correctly signed and not tampered with                                            |
+| Revoked       | True if the E-Prescription has been marked as revoked                                                           |
+| Dispensed     | True if the E-Prescription has been marked as fully dispensed                                                   |
 | Dispensations | If available, an array containing each Medicament with a recorded Dispensation event and a list of those events |
-| Locked        | True if the e-prescription is currently locked.                                                                 |
-| Locked at     | The time at which the e-prescription was locked.                                                                |
-| Lock reason   | The reason for the e-prescription lock. This is available to authenticated actors only.                         |
-| Unlock reason | The reason for unlocking the e-prescription. This is available to authenticated actors only                     |
+| Locked        | True if the E-Prescription is currently locked.                                                                 |
+| Locked at     | The time at which the E-Prescription was locked.                                                                |
+| Lock reason   | The reason for the E-Prescription lock. This is available to authenticated actors only.                         |
+| Unlock reason | The reason for unlocking the E-Prescription. This is available to authenticated actors only.                    |
 
 **Example Response**
 
@@ -685,7 +685,7 @@ The verification information consists of the following information:
 }
 ```
 
-#### 4.2.3. Revoking an e-prescription QR Code
+#### 4.2.3. Revoking an E-Prescription QR Code
 
 **Usage**
 ```
@@ -693,7 +693,7 @@ POST /ePrescription/revoke/<id>
 ```
 
 **Description**<br>
-Invalidate a signed e-prescription QR code by registering it as revoked. Revocations are final: a revoke event cannot be cancelled, and no further actions can be taken on the e-prescription except verifying it.
+Invalidate a signed E-Prescription QR code by registering it as revoked. Revocations are final: a revoke event cannot be cancelled, and no further actions can be taken on the E-Prescription except verifying it.
 
 **Authenticated**<br>
 Yes
@@ -713,7 +713,7 @@ Yes
    </td>
    <td>string
    </td>
-   <td>The Id of the e-prescription to be revoked
+   <td>The Id of the E-Prescription to be revoked
    </td>
   </tr>
 </table>
@@ -725,12 +725,12 @@ Yes
   <tr>
    <td>200 OK
    </td>
-   <td>The e-prescription has been successfully revoked
+   <td>The E-Prescription has been successfully revoked
    </td>
   </tr>
 </table>
 
-#### 4.2.4. Recording an e-prescription Dispensation
+#### 4.2.4. Recording an E-Prescription Dispensation
 
 **Usage**
 ```
@@ -738,7 +738,7 @@ POST /ePrescription/dispense/<id>
 ```
 
 **Description**<br>
-Registers a full or partial dispensation for a signed e-prescription. Dispensations on revoked e-prescriptions are not allowed. Dispensations on fully dispensed e-prescriptions need to be forced (see below)
+Registers a full or partial dispensation for a signed E-Prescription. Dispensations on revoked E-Prescriptions are not allowed. Dispensations on fully dispensed E-Prescriptions need to be forced (see below)
 
 **Authenticated**<br>
 Yes
@@ -759,7 +759,7 @@ Yes
    </td>
    <td>string
    </td>
-   <td>The Id of the e-prescription to be dispensed
+   <td>The Id of the E-Prescription to be dispensed
    </td>
   </tr>
   <tr valign="top">
@@ -889,7 +889,7 @@ Yes
    </td>
    <td>string
    </td>
-   <td>The Id of the e-prescription
+   <td>The Id of the E-Prescription
    </td>
   </tr>
   <tr>
@@ -897,7 +897,7 @@ Yes
    </td>
    <td>string
    </td>
-   <td>The Id of the e-prescription’s event to be canceled
+   <td>The Id of the E-Prescription’s event to be canceled
    </td>
   </tr>
 </table>
@@ -917,7 +917,7 @@ none
   </tr>
 </table>
 
-#### 4.2.6. Locking an e-prescription
+#### 4.2.6. Locking an E-Prescription
 
 **Usage**
 ```
@@ -925,7 +925,7 @@ POST /ePrescription/lock/<id>
 ```
 
 **Description**<br>
-Locks an e-prescription to prevent it from being dispensed or revoked, or any of its events cancelled.
+Locks an E-Prescription to prevent it from being dispensed or revoked, or any of its events cancelled.
 
 **Authenticated**<br>
 Yes
@@ -934,7 +934,7 @@ Yes
 
 | Parameter | Value | Description                               |
 |:----------|:------|:------------------------------------------|
-| reason    |       | The reason for locking the e-prescription |
+| reason    |       | The reason for locking the E-Prescription |
 
 
 **Request Body**<br>
@@ -942,9 +942,9 @@ none
 
 **Response**
 
-200 OK — Successfully locked the e-prescription.
+200 OK — Successfully locked the E-Prescription.
 
-#### 4.2.6. Unlocking an e-prescription
+#### 4.2.6. Unlocking an E-Prescription
 
 **Usage**
 ```
@@ -952,7 +952,7 @@ POST /ePrescription/unlock/<id>
 ```
 
 **Description**<br>
-Unlocks a locked e-prescription.
+Unlocks a locked E-Prescription.
 
 **Authenticated**<br>
 Yes
@@ -961,7 +961,7 @@ Yes
 
 | Parameter | Value | Description                                 |
 |:----------|:------|:--------------------------------------------|
-| reason    |       | The reason for unlocking the e-prescription |
+| reason    |       | The reason for unlocking the E-Prescription |
 
 
 **Request Body**<br>
@@ -969,7 +969,7 @@ none
 
 **Response**
 
-200 OK — Successfully unlocked the e-prescription.
+200 OK — Successfully unlocked the E-Prescription.
 
 ### 4.3. Example API Call
 
@@ -983,17 +983,17 @@ First start the server using the following command:
 ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://oauth2.sign.hin.ch/api
 ```
 
-Then post the e-prescription data to the /ePrescription/create endpoint as following to get the signed e-prescription QR code as response:
+Then post the E-Prescription data to the /ePrescription/create endpoint as following to get the signed E-Prescription QR code as response:
 
 ```
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer epdg:<token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
-A complete example commands incl. authentication can be found in [Appendix A](#a-e-prescription-authentication-and-use-case-commands).
+A complete example commands incl. authentication can be found in [Appendix A](#a-E-Prescription-authentication-and-use-case-commands).
 
 ## Appendix
 
-### A. E-prescription authentication and use case commands
+### A. E-Prescription authentication and use case commands
 
 #### Test Environment
 
@@ -1067,7 +1067,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 #### Use Cases
 
-1. Create a signed e-prescription
+1. Create a signed E-Prescription
 
 	Option 1: Output as Data/URL
 
@@ -1085,7 +1085,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	HTTP/200 OK
 	```
 
-2. Verify e-prescription
+2. Verify E-Prescription
 
 	```
 	$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
@@ -1101,7 +1101,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	}
 	```
 
-3. Dispense e-prescription fully
+3. Dispense E-Prescription fully
 
 	```
 	$ curl -X POST -H "Content-Type: application/json" -H "authorization: Bearer acs:<token>" http://localhost:8082/ePrescription/dispense/00000000-0000-0000-0000-000000000000
@@ -1109,7 +1109,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	HTTP/200 OK
 	```
 
-4. Verify e-prescription
+4. Verify E-Prescription
 
 	```
 	$ curl -X POST -H "Content-Type: application/json" -d 'https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101' http://localhost:8082/ePrescription/verify
@@ -1141,7 +1141,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 The following example, based on a specific use case, shows which data is recorded and how a pharmacist can interpret it to make a decision about a further dispensation.
 
-E-prescription:
+E-Prescription:
 
 * 1 medicament with amount: 1
 * No repetition specified, i.e. repeatable once (only if the indication still exists)
@@ -1160,7 +1160,7 @@ E-prescription:
   <tr>
    <td>Patient
    </td>
-   <td>Receives new e-prescription
+   <td>Receives new E-Prescription
    </td>
    <td>
    </td>
@@ -1176,7 +1176,7 @@ E-prescription:
   <tr valign="top">
    <td>Pharmacy 1
    </td>
-   <td>Verifies e-prescription and identifies that there were no dispenses made yet -> Dispenses medicament according to e-prescription
+   <td>Verifies E-Prescription and identifies that there were no dispenses made yet -> Dispenses medicament according to E-Prescription
    </td>
    <td>
    </td>
@@ -1233,7 +1233,7 @@ Blister 30 Stk)
   <tr valign="top">
    <td>Pharmacy 2
    </td>
-   <td>Verifies e-prescription and sees that one dispensation has already been made -> Dispenses medicament according to e-prescription
+   <td>Verifies E-Prescription and sees that one dispensation has already been made -> Dispenses medicament according to E-Prescription
    </td>
    <td>
    </td>
@@ -1310,7 +1310,7 @@ Full dispense:
   <tr valign="top">
    <td>Pharmacy 3
    </td>
-   <td>Verifies e-prescription and identifies that it has already been fully validated -> Does not dispense medicament
+   <td>Verifies E-Prescription and identifies that it has already been fully validated -> Does not dispense medicament
       </td>
    <td>
    </td>
