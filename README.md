@@ -98,45 +98,16 @@ The audit log does not contain any E-Prescription data, with the exception of it
 
 ### 2.5. Rules
 
-<table valign="top">
-  <tr>
-   <td><strong>Action</strong>
-   </td>
-   <td><strong>Rules</strong>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Create
-   </td>
-   <td>- CHMED16A E-Prescription ID must be a randomly generated ID, according to the UUID standard<br>- CHMED16A E-Prescription ID must be unique and not issued yet
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Revoke
-   </td>
-   <td>CHMED16A E-Prescription ID must exist
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Dispense
-   </td>
-   <td>- CHMED16A E-Prescription ID must exist<br>- CHMED16A E-Prescription ID must not have been revoked<br>- If the CHMED16A E-Prescription ID was fully dispensed, further dispensations must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-E-Prescription-dispensation">4.2.4. Recording an E-Prescription Dispensation</a>)
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Verify
-   </td>
-   <td>n/a
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Cancel
-   </td>
-   <td>The event to be cancelled must:<br>
-- exist<br>- have been created by the same HIN eID<br>- not have been cancelled already
-   </td>
-  </tr>
-</table>
+| Action   | Rules                                                                                                                                                                                                                                                                                                      |
+|:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Create   | - CHMED16A E-Prescription ID must be a randomly generated ID, according to the UUID standard<br>- CHMED16A E-Prescription ID must be unique and not issued yet                                                                                                                                             |
+| Revoke   | - CHMED16A E-Prescription ID must exist<br>- Revocation is final. Revoked E-Prescriptions can only be verified.                                                                                                                                                                                            |
+| Dispense | - CHMED16A E-Prescription ID must exist<br>- CHMED16A E-Prescription ID must not have been revoked<br>- If the CHMED16A E-Prescription ID was fully dispensed, further dispensations must be forced (see [4.2.4. Recording an E-Prescription Dispensation](#424-recording-an-E-Prescription-dispensation)) |
+| Verify   | n/a                                                                                                                                                                                                                                                                                                        |
+| Cancel   | The event to be cancelled must:<br>- exist<br>- have been created by the same HIN eID<br>- not have been cancelled already                                                                                                                                                                                 |
+| Lock     | CHMED16A E-Prescription must exist and must not be already locked or revoked.                                                                                                                                                                                                                              |
+| Unlock   | CHMED16A E-Prescription must exist and must not be already revoked.                                                                                                                                                                                                                                        |
+
 
 ### 2.6. Events
 
