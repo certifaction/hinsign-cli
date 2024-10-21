@@ -932,9 +932,9 @@ Yes
 
 **Query parameters**
 
-| Parameter | Value | Description                               |
-|:----------|:------|:------------------------------------------|
-| reason    |       | The reason for locking the E-Prescription |
+| Parameter | Value  | Description                               |
+|:----------|:-------|:------------------------------------------|
+| reason    | string | The reason for locking the E-Prescription |
 
 
 **Request Body**<br>
@@ -959,9 +959,9 @@ Yes
 
 **Query parameters**
 
-| Parameter | Value | Description                                 |
-|:----------|:------|:--------------------------------------------|
-| reason    |       | The reason for unlocking the E-Prescription |
+| Parameter | Value  | Description                                 |
+|:----------|:-------|:--------------------------------------------|
+| reason    | string | The reason for unlocking the E-Prescription |
 
 
 **Request Body**<br>
