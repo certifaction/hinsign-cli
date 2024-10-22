@@ -142,11 +142,11 @@ Events record the lifecycle of an E-Prescription.
   </tr>
   <tr>
     <td>Lock</td>
-    <td>The E-Prescription is locked.</td>
+    <td>The E-Prescription is locked. The lock reason is included in the lock event, if a reason was provided.</td>
   </tr>
   <tr>
     <td>Unlock</td>
-    <td>The E-Prescription is unlocked.</td>
+    <td>The E-Prescription is unlocked. The unlock reason is included in the lock event, if a reason was provided.</td>
   </tr>
 </table>
 
