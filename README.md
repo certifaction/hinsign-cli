@@ -619,16 +619,22 @@ A signed E-Prescription QR Code in its string form.
 **Response**<br>
 The verification information consists of the following information:
 
-| Field         | Description                                                                                                     |
-|---------------|-----------------------------------------------------------------------------------------------------------------|
-| Valid         | True if the E-Prescription is correctly signed and not tampered with                                            |
-| Revoked       | True if the E-Prescription has been marked as revoked                                                           |
-| Dispensed     | True if the E-Prescription has been marked as fully dispensed                                                   |
-| Dispensations | If available, an array containing each Medicament with a recorded Dispensation event and a list of those events |
-| Locked        | True if the E-Prescription is currently locked.                                                                 |
-| Locked at     | The time at which the E-Prescription was locked.                                                                |
-| Lock reason   | The reason for the E-Prescription lock. This is available to authenticated actors only.                         |
-| Unlock reason | The reason for unlocking the E-Prescription. This is available to authenticated actors only.                    |
+| Field           | Description                                                                                                     |
+|-----------------|-----------------------------------------------------------------------------------------------------------------|
+| Prescription ID | The unique ID for E-Prescription. This is the ID you use to revoke the E-Prescription.                          |
+| Issued At       | The date and time at which the E-Prescription was issued.                                                       |
+| Issued By       | The name of the E-Prescription's issuer.                                                                        |
+| Valid           | True if the E-Prescription is correctly signed and not tampered with                                            |
+| Revoked         | True if the E-Prescription has been marked as revoked                                                           |
+| Dispensed       | True if the E-Prescription has been marked as fully dispensed                                                   |
+| Dispensed At    | The date and time at which the E-Prescription was dispensed.                                                    |
+| Dispensed By    | The name of the pharmacy that dispensed the E-Prescription.                                                     |
+| Dispensations   | If available, an array containing each Medicament with a recorded Dispensation event and a list of those events |
+| Locked          | True if the E-Prescription is currently locked.                                                                 |
+| Locked at       | The time at which the E-Prescription was locked.                                                                |
+| Lock reason     | The reason for the E-Prescription lock. This is available to authenticated actors only.                         |
+| Unlock reason   | The reason for unlocking the E-Prescription. This is available to authenticated actors only.                    |
+| Events          | A list of all events that have been recorded for the E-Prescription, from the earliest to the most recent.      |
 
 **Example Response**
 
