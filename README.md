@@ -23,12 +23,7 @@ The E-prescription Switzerland service includes the following use cases for doct
 
 **E-prescription as part of HIN Sign**
 
-The E-prescription Switzerland service is part of the HIN Sign service and is therefore available via the same integration. The component only needs to be integrated once and can be used to sign documents and/or e-prescriptions.
-
-For integrators, this means:
-
-* An existing or new "HIN Sign document signature"-integration can also make use of the e-prescription functionality.
-* An existing or new "E-prescription Switzerland service"-integration can also be used to sign documents.
+The E-prescription Switzerland service is part of the HIN Sign service and is therefore available via a similar integration.
 
 The HIN Sign document signature can be used to sign documents, which don't require a handwritten signature by law. Examples:
 
@@ -44,7 +39,7 @@ The E-prescription Switzerland service QR code contains the e-prescription data 
 
 The QR Code contains:
 
-1. A link to the e-prescription information page
+1. A link to the e-prescription validation page
 2. The e-prescription data in CHMED16A1 format
 3. The signature data for verification
 
@@ -83,7 +78,7 @@ An ECDSA key is used for the signature. It is stored and managed on a secure acc
 
 ### 2.4. Audit log
 
-Every action triggers an entry in a HIN Sign audit log. It contains the following information:
+Every action triggers an entry in a HIN e-prescription audit log. It contains the following information:
 
 * Type of action (signature, revocation, dispensation, cancellation)
 * Action data
@@ -160,7 +155,7 @@ Events record the lifecycle of an e-prescription.
   <tr>
    <td>Full dispense
    </td>
-   <td>The e-prescription or all medicaments contained in it are  dispensed. If all medicaments contained in the e-prescription have been dispensed through partial dispense, a full dispense must be made afterwards (this is not done automatically). Dispenses of revoked e-prescriptions are not allowed. Full dispenses of fully dispensed e-prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-e-prescription-dispensation">4.2.4. Recording an e-prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
+   <td>The e-prescription or all medicaments contained in it are dispensed. If all medicaments contained in the e-prescription have been dispensed through partial dispense, a full dispense must be made afterwards (this is not done automatically). Dispenses of revoked e-prescriptions are not allowed. Full dispenses of fully dispensed e-prescriptions must be forced (see <a href="https://github.com/certifaction/hinsign-cli#424-recording-an-e-prescription-dispensation">4.2.4. Recording an e-prescription Dispensation</a>). In the case of forced dispensations, the responsibility lies with the dispensers (pharmacists).
    </td>
   </tr>
   <tr>
@@ -353,9 +348,9 @@ For the various actions of the E-prescription Switzerland service, there are dif
   <tr valign="top">
    <td>Create
    </td>
-   <td>Personal HIN eID with hardening 20 (person code 10)
+   <td>Personal HIN eID with hardening 10 (person code 10)
    </td>
-   <td>Auth-Service (based on SAML)
+   <td>Authentication Service
    </td>
    <td>HIN membership
    </td>
@@ -365,7 +360,7 @@ For the various actions of the E-prescription Switzerland service, there are dif
    </td>
    <td>Personal HIN eID with hardening 20
    </td>
-   <td>Auth-Service (based on SAML)
+   <td>Authentication Service
    </td>
    <td>HIN membership
    </td>
@@ -394,11 +389,11 @@ For the various actions of the E-prescription Switzerland service, there are dif
   <tr valign="top">
    <td>Cancel
    </td>
-   <td>- Personal HIN eID with hardening 20
+   <td>- Personal HIN eID with hardening 10
 <p>
 - Team HIN eID
    </td>
-   <td>- Auth-Service (based on SAML)
+   <td>- Authentication Service
 <p>
 - OAuth via HIN ACS
    </td>
@@ -409,15 +404,15 @@ For the various actions of the E-prescription Switzerland service, there are dif
   </tr>
 </table>
 
-<i>Note on the authentication with “Personal HIN eID with hardening 20”:</i> <br>
-This authentication is done via the HIN/ADSwiss Auth-Service, which ensures that the user was a correctly identified and recently authenticated. HIN Sign also uses the person code 10 to ensure that the person is a doctor.
+<i>Note on the authentication with “Personal HIN eID with hardening 10”:</i> <br>
+This authentication is done via the HIN Authentication Service, which ensures that the user was correctly identified as a doctor and recently authenticated.
 
 **EPD authentication**<br>
-The issuance of e-prescriptions requires authentication on EPD level. The HIN/ADSwiss Auth-Service is used for this, as per the diagram below:
+The issuance of e-prescriptions requires authentication on near EPD level. The HIN Authentication Service is used for this, as per the diagram below:
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
-## 4. HIN Sign API for e-prescription signature
+## 4. HIN eprescription API for e-prescription signature
 
 ### 4.1. Introduction
 
@@ -451,19 +446,19 @@ Please see chapter [Authentication and Authorisation](#32-authentication-and-aut
 
 When indicated, the requests must be authenticated as following (an environment is provided for testing that does not enforce authentication):
 
-HTTP Server Mode (OAuth via HIN ACS):
+HTTP Server Mode (oAuth via HIN ACS for dispenses):
 ```
 Authorization: Bearer acs:<token>
 ```
 
-HTTP Server Mode (Auth-Service):
+HTTP Server Mode (Auth-Service for the signing process):
 ```
-Authorization: Bearer epdg:<token>
+Authorization: Bearer oauth:<token>
 ```
 
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
 
-For the creation of e-prescription the elevated EPD-Level Authentication based on SAML artifacts is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
+For the creation of e-prescription the elevated near EPD-Level Authentication is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
 
 ### 4.2. E-prescription Endpoints
 
@@ -921,7 +916,7 @@ Create a valid-chmed16a1.json file containing a valid CHMED16A1 data set.
 First start the server using the following command:
 
 ```
-ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://oauth2.sign.hin.ch/api
+ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://oauth2.eprescription.hin.ch/api
 ```
 
 Then post the e-prescription data to the /ePrescription/create endpoint as following to get the signed e-prescription QR code as response:
@@ -933,71 +928,6 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer epdg:
 A complete example commands incl. authentication can be found in [Appendix A](#a-e-prescription-authentication-and-use-case-commands).
 
 ## Appendix
-
-### A. E-prescription authentication and use case commands
-
-#### Test Environment
-
-```
-ENABLE_EPRESCRIPTION=true certifaction server --api https://api.testnet.certifaction.io --hin-api https://oauth2.sign-test.hin.ch/api
-```
-
-#### EPD Authentication
-
-##### Required Secrets:
-* A HIN Account
-* A OAuth2 Client Id / Secret with permission for “ADSwiss_CI-Test”
-
-##### OAuth Token for Auth Service
-1. Get Access Code
-    [http://apps.hin.ch/REST/v1/OAuth/GetAuthCode/ADSwiss_CI-Test?response_type=code&client_id=&lt;client_id>&redirect_uri=http%3A%2F%2Flocalhost%2FgetAccessToken](http://apps.hin.ch/REST/v1/OAuth/GetAuthCode/ADSwiss_CI-Test?response_type=code&client_id=<client_id>&redirect_uri=http%3A%2F%2Flocalhost%2FgetAccessToken)<br>
-    or<br>
-    Get OAuth2 auth code for “AD Swiss Convenience Interface Test” via [https://apps.hin.ch](https://apps.hin.ch)
-
-2. Code to Token
-	```
-	curl -H "Content-Type: application/x-www-form-urlencoded" --data "grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalhost%2FgetAccessToken&code=<access_code>&client_id=<client_id>&client_secret=<client_secret>" https://oauth2.hin.ch/REST/v1/OAuth/GetAccessToken
-	```
-
-##### User Login
-
-1. Get Login URL
-
-    ```
-    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth?targetUrl=http%3A%2F%2Flocalhost%2Fsuccess&style=redirect" --header "accept: application/json" --header "Authorization: Bearer <token>"
-    ```
-
-2. Resolve Code to Handle
-
-    ```
-    curl --request POST --url "https://oauth2.ci-prep.adswiss.hin.ch/authService/EPDAuth/auth_handle" -d "{\"authCode\":\"<auth_code>\"}" --header "accept: application/json" --header "Content-Type: application/json" --header "Authorization: Bearer <token>"
-    ```
-
-
-3. Use handle as token in `Authorization: Bearer epdg:<token>` header for calls to CLI
-
-
-#### ACS Authentication
-
-##### Required Secrets
-
-* A HIN Account
-* A OAuth2 Client Id / Secret with permission for “HINSign”
-
-##### User Login
-
-1. [http://apps.hin.ch/REST/v1/OAuth/GetAuthCode/HINSign?response_type=code&client_id=&lt;client_id>&redirect_uri=http%3A%2F%2Flocalhost%2FgetAccessToken](http://apps.hin.ch/REST/v1/OAuth/GetAuthCode/ADSwiss_CI-Test?response_type=code&client_id=<client_id>&redirect_uri=http%3A%2F%2Flocalhost%2FgetAccessToken)<br>
-    or<br>
-    Get OAuth2 auth code for “HIN Signaturservice” via [https://apps.hin.ch](https://apps.hin.ch) (HIN Login enforced)
-
-2. Code to Token
-
-    ```
-    curl -H 'Content-Type: application/x-www-form-urlencoded' --data 'grant_type=authorization_code&redirect_uri=&code=<AUTHORIZATION CODE>&client_id=<client_id>&client_secret=<client_secret>' https://oauth2.hin.ch/REST/v1/OAuth/GetAccessToken
-    ```
-
-3. Use token in `Authorization: Bearer acs:<token>` header for calls to CLI
-
 
 #### Input Data
 
@@ -1013,7 +943,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	Option 1: Output as Data/URL
 
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer epdg:<token>" http://localhost:8082/ePrescription/create?output-format=data
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H "authorization: Bearer oauth:<token>" http://localhost:8082/ePrescription/create?output-format=data
 
 	HTTP/200 OK
 		{"SignedPrescriptionData":"https://eprescription.hin.ch/#CHMED16A1H4sIAA…lXGtoKAAA&i=Dr.+Test+Test+1&t=1642529665&s=70cd59558926868ca5dbf18e671eb44caffa6d0be491cf736ed39159ba25c4413177c83088a5f29bf7d5b6d78dc8daa4ab609d0a384dbc2834e00dbea4487db101"}
@@ -1021,7 +951,7 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 
 	Option 2:  Output as PNG QR Code
 	```
-	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer epdg:<token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
+	$ curl -X POST -H "Content-Type: application/json" --data @testCHMED16A1.txt -H “authorization: Bearer oauth:<token>” http://localhost:8082/ePrescription/create?output-format=qrcode > testQrCode.png
 
 	HTTP/200 OK
 	```
