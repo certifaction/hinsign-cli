@@ -916,13 +916,13 @@ Create a valid-chmed16a1.json file containing a valid CHMED16A1 data set.
 First start the server using the following command:
 
 ```
-ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://oauth2.eprescription.hin.ch/api
+ENABLE_EPRESCRIPTION=true ./certifaction server --api  https://api.certifaction.io
 ```
 
 Then post the e-prescription data to the /ePrescription/create endpoint as following to get the signed e-prescription QR code as response:
 
 ```
-curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer epdg:<token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer oauth:<token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
 A complete example commands incl. authentication can be found in [Appendix A](#a-e-prescription-authentication-and-use-case-commands).
