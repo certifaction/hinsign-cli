@@ -146,7 +146,7 @@ Events record the lifecycle of an E-Prescription.
   </tr>
   <tr>
     <td>Unlock</td>
-    <td>The E-Prescription is unlocked. The unlock reason is included in the lock event, if a reason was provided.</td>
+    <td>The E-Prescription is unlocked. The unlock reason is included in the unlock event, if a reason was provided.</td>
   </tr>
 </table>
 
