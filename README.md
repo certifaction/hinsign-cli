@@ -337,7 +337,7 @@ For the various actions of the E-Prescription Switzerland service, there are dif
   <tr valign="top">
    <td>Revoke
    </td>
-   <td>Personal HIN eID with hardening 20
+   <td>Personal HIN eID with hardening 10
    </td>
    <td>Authentication Service
    </td>
