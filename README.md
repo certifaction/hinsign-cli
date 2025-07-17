@@ -78,7 +78,7 @@ An ECDSA key is used for the signature. It is stored and managed on a secure acc
 
 ### 2.4. Audit log
 
-Every action triggers an entry in a HIN e-prescription audit log. It contains the following information:
+Every action triggers an entry in a HIN E-Prescription audit log. It contains the following information:
 
 * Type of action (signature, revocation, dispensation, cancellation)
 * Action data
@@ -391,7 +391,7 @@ The issuance of e-Prescriptions requires authentication on near EPD level. The H
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
-## 4. HIN eprescription API for e-prescription signature
+## 4. HIN eprescription API for E-Prescription signature
 
 ### 4.1. Introduction
 
