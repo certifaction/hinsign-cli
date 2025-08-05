@@ -17,21 +17,23 @@ The E-Prescription Switzerland service includes the following use cases for doct
 * Verifying E-Prescriptions
 * Revoking E-Prescriptions
 * (Partial) dispensing of E-Prescriptions
+* (temporary) locking of E-Prescriptions
 * Cancelling these actions
 
 ### 1.2. Integration of the E-Prescription Switzerland service
 
-**E-Prescription as part of HIN Sign**
+**E-Prescription versus HIN Sign**
 
-The E-Prescription Switzerland service is part of the HIN Sign service and is therefore available via a similar integration.
-
+The integration of the E-Prescription Switzerland service is very similar to the integration of the HIN Sign service.
+However, there are important differences to be aware of:
 The HIN Sign document signature can be used to sign documents, which don't require a handwritten signature by law. Examples:
 
-* Medical prescriptions (exception: narcotic prescriptions)
 * Certificates of incapacity for work
 * Reports and expert opinions
 * Clinical findings
 * Forms
+
+* Medical prescriptions may not be signed with HIN Sign, although this was promoted before.
 
 ## 2. E-Prescription Switzerland service: QR code specification
 
@@ -63,7 +65,7 @@ The QR code signature ensures the integrity and authenticity of the E-Prescripti
 
 The signature contains:
 
-* Identity of the actor (Name and HIN eID)
+* Identity of the signee (Name and HIN eID)
 * Timestamp
 * Cryptographic signature
 
@@ -307,87 +309,9 @@ Issuing systems (PIS/KIS) integrate the E-Prescription Switzerland service via t
 
 ![Architektur HIN Sign eRezept Service](./assets/Architektur_HIN_Sign_eRezept_Service.svg)
 
-### 3.2 Authentication and authorisation
 
-For the various actions of the E-Prescription Switzerland service, there are different requirements regarding the strength of authentication and authorisation.
-
-**Overview**
-
-<table valign="top">
-  <tr>
-   <td><strong>Action</strong>
-   </td>
-   <td><strong>Authentication</strong>
-   </td>
-   <td><strong>Tech</strong>
-   </td>
-   <td><strong>Authorisation</strong>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Create
-   </td>
-   <td>Personal HIN eID with hardening 10 (person code 10)
-   </td>
-   <td>Authentication Service
-   </td>
-   <td>HIN membership
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Revoke
-   </td>
-   <td>Personal HIN eID with hardening 10
-   </td>
-   <td>Authentication Service
-   </td>
-   <td>HIN membership
-   </td>
-  </tr>
-  <tr>
-   <td>Verification
-   </td>
-   <td>None
-   </td>
-   <td>None
-   </td>
-   <td>None
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Dispense
-   </td>
-   <td>- Personal HIN eID
-   <p>- Team HIN eID
-   </td>
-   <td>OAuth via HIN ACS
-   </td>
-   <td>HIN membership
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Cancel
-   </td>
-   <td>- Personal HIN eID with hardening 10
-<p>
-- Team HIN eID
-   </td>
-   <td>- Authentication Service
-<p>
-- OAuth via HIN ACS
-   </td>
-   <td>HIN membership
-<p>
-& only self-created events
-   </td>
-  </tr>
-</table>
-
-<i>Note on the authentication with “Personal HIN eID with hardening 10”:</i> <br>
-This authentication is done via the HIN Authentication Service, which ensures that the user was correctly identified as a doctor and recently authenticated.
-
-**EPD authentication**<br>
-The issuance of e-Prescriptions requires authentication on near EPD level. The HIN Authentication Service is used for this, as per the diagram below:
+**Authentication**<br>
+The issuance of E-Prescriptions requires authentication on near EPD level. This authentication is done via the HIN Authentication Service, which ensures that the user was correctly identified as a doctor and recently authenticated.
 
 ![Architektur EPDG Authentisierung](./assets/Architektur_EPDG_Authentisierung.svg)
 
@@ -436,8 +360,6 @@ Authorization: Bearer oauth:<token>
 ```
 
 If the request is not authenticated a HTTP 401 Unauthorized or a HTTP 403 Forbidden response is returned.
-
-For the creation of E-Prescription the elevated near EPD-Level Authentication is mandatory. Please refer to the [respective section](#32-authentication-and-authorisation) for further details.
 
 ### 4.2. E-Prescription Endpoints
 
@@ -961,20 +883,11 @@ Then post the E-Prescription data to the /ePrescription/create endpoint as follo
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer oauth:<token>" --data @valid-chmed16a1.json http://localhost:8082/ePrescription/create?type=qrcode > test-ePrescription.png
 ```
 
-A complete example commands incl. authentication can be found in [Appendix A](#a-E-Prescription-authentication-and-use-case-commands).
-
 ## Appendix
-
-#### Input Data
-
-```
-$ cat testCHMED16A1.txt
-CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs740r9Jn2NOe2hfboWQ5sZM0QRHENmVyNKLm++aHc02PlE1BW9q/pvvv1QJonw4Lo2iHvlsvD4wag0HBYIhqlPf8oMt5V0gUHYCe4r2+6NATawCcwgCMLq1RZQnE6XxKlyiVjDFc/Jnaq7WOe4We42IKOD1KCu3exqIeieMYB/5QvjdSae6U0ChvXpvyxxjScplC7k0S1DiclrT/9zU9vVpCbcmZcg9wT3qhxz0fh+AyjDzBOF68wIvlP6O3B6O9IWOcri46dARTR8DwXWlHoPFhZ5CBBe2zDj2e1Nsfooq/6jSTAMUoDXlw0YpEIwoifyPia1Ev2ohkOwlbdb65FzWmqLtweAun56j8qFNkWLgHdtGGweY+X12sVjWodIIu1LbZ0L2CCimlCMOatmYLiVCLRmNo902BoKlggnVZryvcpkN7WjSUHOpjKGtOhqjPPNbhONw/jgtnfWMAxkKG6qfZ/Lh0bJ4U07EBrZHaDn27XB66+ED5qRrnYC0QuLS5R1JNsiLJQZc/br7f/PiK4+b7V/z/VhmYGUhhQc5dWBmiqlm+o/RvCdoj+ILjQuHeRx/cFJY10yfV2NndEk05E3FYM9ay4P8qC3cYeIKFISwNlGVa7LAwKswcMZNKq3Gyi1zP0znBFCMjleRfILUIchvjPWxBEEoWv4SHn49tkFc2KSbJ1FST7M1fYL5sY/z4XGzkQXAd+n58pCbZnfzBghKIKJAviZM/ifNQzyCz91z4bHgPhKdsUfINNNHze1EsX9eFR8pkqS4LTd4Q3MHmGKs5zLeBnhUGIS3IySTJ1Qx051ejtobOH8rMoMdi8VL1qR38p9BHVZlBfgmmXCqtKzyUthNUfU4XKieSfCZ2F+o8TycJgRSrW7J4JDn5bfyKDdJYxswPXsrH7fi5j88Qoi2Ws3sQB5CSAUyVmXmEB6RLJCOjVFfoOHK59vkeVl5M0JYNTs4x4YEojIZdVv6bZI9SslOTb6m5DQIR8JD1wtdNbVe0THJlk0VV7vg/tXcJkA1wTXKl54R3WRdHh0yVVhgJ5zBJSsjdCVXfw++DoS/ux76PWe/77HVhP3Y2c7I5nTk6uMI+bzsSbh38BLwLBLGP3VrdprkFFg9YOH3UxiZlA7UpAMJ1igwhukuEn2bWyqPIj5yleN6gdhQyjk2cDIWs6+Wn0tleE9NQxV2rysQpD/tS9GX8O+P9uhE9XmDI0UHqALpKte6DsQdReQ7ENU9Z3TyBdkCVA0rmlSVgst3W4xsS6JyMrdjAdbd09dv/UKW0QFkLAAA=
-```
 
 #### Use Cases
 
-1. Create a signed E-Prescription
+1. Sign E-Prescription
 
 	Option 1: Output as Data/URL
 
@@ -1043,223 +956,3 @@ CHMED16A1H4sIAAAAAAAACr1WzW7bOBC+71MQvK6t8kd/9mnrdZINULdBkiZAFznQ9tgSJFMGRQVNs74
 	   ]
 	}
 	```
-
-### B. Example use case
-
-The following example, based on a specific use case, shows which data is recorded and how a pharmacist can interpret it to make a decision about a further dispensation.
-
-E-Prescription:
-
-* 1 medicament with amount: 1
-* No repetition specified, i.e. repeatable once (only if the indication still exists)
-* No permanent prescription
-* Issued on 27.01.2022 → Duration of validity depends on cantonal regulations
-
-<table>
-  <tr>
-   <td><strong>Who</strong>
-   </td>
-   <td><strong>Event</strong>
-   </td>
-   <td><strong>Recorded dispense</strong>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Receives new E-Prescription
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Goes to pharmacy 1
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Pharmacy 1
-   </td>
-   <td>Verifies E-Prescription and identifies that there were no dispenses made yet -> Dispenses medicament according to E-Prescription
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Pharmacy 1
-   </td>
-   <td>Records partial dispense
-   </td>
-   <td>Partial dispense:
-<table>
-  <tr>
-   <td>Event
-   </td>
-   <td>Partial dispense
-   </td>
-  </tr>
-  <tr>
-   <td>Amount
-   </td>
-   <td>1
-   </td>
-  </tr>
-  <tr>
-   <td>Date
-   </td>
-   <td>28.01.2022
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Dispensed by
-   </td>
-   <td>Pharmacy 1
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Medicament
-   </td>
-   <td>3458478 (AMLODIPIN Sandoz eco Tabl 10 mg /
-Blister 30 Stk)
-   </td>
-  </tr>
-</table>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Goes to pharmacy 2
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Pharmacy 2
-   </td>
-   <td>Verifies E-Prescription and sees that one dispensation has already been made -> Dispenses medicament according to E-Prescription
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Pharmacy 2
-   </td>
-   <td>Records partial dispense (optional) and records a full dispense
-   </td>
-   <td>Partial dispense (optional):
-<table>
-  <tr>
-   <td>Event
-   </td>
-   <td>Partial dispense
-   </td>
-  </tr>
-  <tr>
-   <td>Amount
-   </td>
-   <td>1
-   </td>
-  </tr>
-  <tr>
-   <td>Date
-   </td>
-   <td>10.02.2022
-   </td>
-  </tr>
-  <tr>
-   <td>Dispensed by
-   </td>
-   <td>Pharmacy 2
-   </td>
-  </tr>
-  <tr>
-   <td>Medicament
-   </td>
-   <td>3458478 (AMLODIPIN Sandoz eco Tabl 10 mg / Blister 30 Stk)
-   </td>
-  </tr>
-</table>
-Full dispense:
-<table>
-  <tr>
-   <td>Event
-   </td>
-   <td>Full dispense
-   </td>
-  </tr>
-  <tr>
-   <td>Date
-   </td>
-   <td>10.02.2022
-   </td>
-  </tr>
-  <tr>
-   <td>Actor
-   </td>
-   <td>Pharmacy 2
-   </td>
-  </tr>
-</table>
-   </td>
-  </tr>
-  <tr>
-   <td>Patient
-   </td>
-   <td>Goes to pharmacy 3
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr valign="top">
-   <td>Pharmacy 3
-   </td>
-   <td>Verifies E-Prescription and identifies that it has already been fully validated -> Does not dispense medicament
-      </td>
-   <td>
-   </td>
-  </tr>
-</table>
-
-### C. Example input and output data
-
-#### Example “simple” (~660 characters)
-
-CHMED16 data
-
-```
-CHMED16A1H4sIAAAAAAAEAMVU3W7TMBR+lcq3S4SPHdtx7raVAaKFqutAAnoREreJ2jpT4gKj6ptxx4txnCwVSKQSu0GVqvPX7+fIpwdyuXcFSYiSFCjloGKtNQnI2GGRUZAh1SGwBUASyYTqC8oSSnHgVe4HZM7z1UqF6WcqwkhxjCKdhcJkWc650GIlcXZq8sXDvSEJtHGZpTtjXUOSj4cORyuIpWpRu0EekFnVDYzxmwbtZ+l13dTV7g9t5Ij1eZVicfYWMRab9byxmF1urMH8zpbezO3iNTkGj4RRJIHH7Bwj/J2RhUAHGa+2e/fF1PnPH9bu7XqAnHEhZHzGrqeGJ5EXVVbk9T7bfHr20tTfBwRAxCQHen7f/y7guqi2pnGmLm1j7MbUA/Qx1VLz8/aftvvf7L9Pm2ZQAQgBTEX/QwL+dJa6Et8/SQ7kqr0z0DGEFPxbDsh16R48lqktZjdv8FYwnabfyl2KhRfG5giasIBMTj3nWp4JPrmEjJ93J+fxx5PGTY3X1tbSzuHpGDthCPUu3eKM4O2Kujbr29C3QcSd9ex0udibYyKUWvbLZX3Au54EdupFfSD6QD4CCBEIBcsjjpJZUVnv6yJCxlEsYMRk+59z62pj/MLuLBreoe2vZj2KsfOhvMcyp0yhAzLfbbzj4y8tzloh3gQAAA==
-```
-
-
-QR code content
-
-```
-https://eprescription.hin.ch/#CHMED16A1H4sIAAAAAAAEAMVU3W7TMBR+lcq3S4SPHdtx7raVAaKFqutAAnoREreJ2jpT4gKj6ptxx4txnCwVSKQSu0GVqvPX7+fIpwdyuXcFSYiSFCjloGKtNQnI2GGRUZAh1SGwBUASyYTqC8oSSnHgVe4HZM7z1UqF6WcqwkhxjCKdhcJkWc650GIlcXZq8sXDvSEJtHGZpTtjXUOSj4cORyuIpWpRu0EekFnVDYzxmwbtZ+l13dTV7g9t5Ij1eZVicfYWMRab9byxmF1urMH8zpbezO3iNTkGj4RRJIHH7Bwj/J2RhUAHGa+2e/fF1PnPH9bu7XqAnHEhZHzGrqeGJ5EXVVbk9T7bfHr20tTfBwRAxCQHen7f/y7guqi2pnGmLm1j7MbUA/Qx1VLz8/aftvvf7L9Pm2ZQAQgBTEX/QwL+dJa6Et8/SQ7kqr0z0DGEFPxbDsh16R48lqktZjdv8FYwnabfyl2KhRfG5giasIBMTj3nWp4JPrmEjJ93J+fxx5PGTY3X1tbSzuHpGDthCPUu3eKM4O2Kujbr29C3QcSd9ex0udibYyKUWvbLZX3Au54EdupFfSD6QD4CCBEIBcsjjpJZUVnv6yJCxlEsYMRk+59z62pj/MLuLBreoe2vZj2KsfOhvMcyp0yhAzLfbbzj4y8tzloh3gQAAA==&i=Vorname+Nachname+%28HIN+Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
-```
-
-QR code
-
-![Beispiel Einfach QRCode](./assets/Beispiel_Einfach_QRCode.png)
-
-
-#### Example “Dora Graber” (~1350 characters)
-
-CHMED16 data
-
-```
-CHMED16A1H4sIAAAAAAAACr2WX2/iOBDAv4rl1wtZ/yEh8LTlaHuVll1Eu620qz4YGIiV4CDHqbbb49v0M9zTvfHFbhwaWvpvV6eqgIMzGTv+zYzHc0NHymkwjvZu6NFntQTao4PCKhrQT3e3x1ZNwKKgP0A1yrvtqMV5S0gUHYOZ4bOeCOipswBeoQ/WlM6qsgTidb7pFUolYwxv/tTu+k7Hv8Is8GYG2B2lhfFvY50uSZIEG/5QfjhUOvdKuKhwUS/l4wR0udKQh9MUNU5mJe19v6Fn1yuoV3Ku/AAeyjAOedjGJriMO6FgHC9hFCby7+HB8fBwwBin68uADmHmDTD4VLohGBzsF2RhSXssoONpPf0JqrTXwbYToRilMY8uG5HYiqJOeyfid6JuZyeSTSdu1PnuWWe7FPUQhzc4XW/Kr0ajhYUf8Jg2jnbP+fpyva6h9BRdaNx2Qv8KKqSUIo5rs22nkIhabDUG7sgWCE0FE6zFui3hJx24s2JrkhMzhrK2yQD1WcgCjs3/Y7v0q98uAGMhQ/WzbDEuvTVPi9nEgjFo2oAerFYnPj5QfqYmOTgHBK5cHhJtSFakOZhyc1tZmFvQsCQXPpAsUdU83/xTggkJTjIuFI4fffFdWNXWPK0mfm2NMSlnIolrqzSk7f9L+oDyF6QDWFkoS108Ih0WdoFcpDJqkm5uzUIvCG4cMlRp/hO0Q6x9qic0URRLlryF336fpp9XLi2m6cxW0+zDX2B/7lN9fZmGPIsT0M+TkZpmD/YBJoZIdCL5lmT8l2QnZg6Ze+KmV4CeCTrZcPEdjOi2u51Evq+bRspm2pSFIR8IzuByjMAcFvto54VFpCU5naa5moMJfj8Wa1j+3A6LuiwRb5VLmsZfhR1WZQb5FdhypYyp8ADZ32jqh16qnEjyg7jN7SLX05SAxtyTLl/YZPw+KsWOLZEJa0dv5cemve7Hc4RyxWr+BKoPmvRhpuw8JDwiLSIZGWpToavI1Z1fDzFL4rZr+Dm5wI0LRKHH3ebfafaiER7lz3tj3DtaRDxm3fh9t6hPNza9dumyKh/5WLuHyHKLakiuzILwFmthC8hMGYW+v4BpWkLuz4/6GX6fDW/xNL7buJfbbfa+2C+dlZzsTkuOLq2w7tr3/b2D6et4+OrREVZPddnkbzAlwNLrozYWDTvU2ghYttWf1jOX5oPjDvCkQO1OzDgWVTIWss6C30q/duzUpSOaivvSkYkzHvek6MnkD8Z79QTjJYYc7WsP6LPRXV2KNYHKcyC+mMnqYgaMB1UelCwqR8Bm+eYWTebdisVQ39eXdP0fL5lXGtoKAAA=
-```
-
-QR code content
-
-```
-https://eprescription.hin.ch/#CHMED16A1H4sIAAAAAAAACr2WX2/iOBDAv4rl1wtZ/yEh8LTlaHuVll1Eu620qz4YGIiV4CDHqbbb49v0M9zTvfHFbhwaWvpvV6eqgIMzGTv+zYzHc0NHymkwjvZu6NFntQTao4PCKhrQT3e3x1ZNwKKgP0A1yrvtqMV5S0gUHYOZ4bOeCOipswBeoQ/WlM6qsgTidb7pFUolYwxv/tTu+k7Hv8Is8GYG2B2lhfFvY50uSZIEG/5QfjhUOvdKuKhwUS/l4wR0udKQh9MUNU5mJe19v6Fn1yuoV3Ku/AAeyjAOedjGJriMO6FgHC9hFCby7+HB8fBwwBin68uADmHmDTD4VLohGBzsF2RhSXssoONpPf0JqrTXwbYToRilMY8uG5HYiqJOeyfid6JuZyeSTSdu1PnuWWe7FPUQhzc4XW/Kr0ajhYUf8Jg2jnbP+fpyva6h9BRdaNx2Qv8KKqSUIo5rs22nkIhabDUG7sgWCE0FE6zFui3hJx24s2JrkhMzhrK2yQD1WcgCjs3/Y7v0q98uAGMhQ/WzbDEuvTVPi9nEgjFo2oAerFYnPj5QfqYmOTgHBK5cHhJtSFakOZhyc1tZmFvQsCQXPpAsUdU83/xTggkJTjIuFI4fffFdWNXWPK0mfm2NMSlnIolrqzSk7f9L+oDyF6QDWFkoS108Ih0WdoFcpDJqkm5uzUIvCG4cMlRp/hO0Q6x9qic0URRLlryF336fpp9XLi2m6cxW0+zDX2B/7lN9fZmGPIsT0M+TkZpmD/YBJoZIdCL5lmT8l2QnZg6Ze+KmV4CeCTrZcPEdjOi2u51Evq+bRspm2pSFIR8IzuByjMAcFvto54VFpCU5naa5moMJfj8Wa1j+3A6LuiwRb5VLmsZfhR1WZQb5FdhypYyp8ADZ32jqh16qnEjyg7jN7SLX05SAxtyTLl/YZPw+KsWOLZEJa0dv5cemve7Hc4RyxWr+BKoPmvRhpuw8JDwiLSIZGWpToavI1Z1fDzFL4rZr+Dm5wI0LRKHH3ebfafaiER7lz3tj3DtaRDxm3fh9t6hPNza9dumyKh/5WLuHyHKLakiuzILwFmthC8hMGYW+v4BpWkLuz4/6GX6fDW/xNL7buJfbbfa+2C+dlZzsTkuOLq2w7tr3/b2D6et4+OrREVZPddnkbzAlwNLrozYWDTvU2ghYttWf1jOX5oPjDvCkQO1OzDgWVTIWss6C30q/duzUpSOaivvSkYkzHvek6MnkD8Z79QTjJYYc7WsP6LPRXV2KNYHKcyC+mMnqYgaMB1UelCwqR8Bm+eYWTebdisVQ39eXdP0fL5lXGtoKAAA=&i=Vorname+Nachname+%28HIN+Id%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
-```
-
-QR code
-
-![Beispiel Dora Graber QRCode](./assets/Beispiel_Dora_Graber_QRCode.png)
