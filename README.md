@@ -17,7 +17,7 @@ The E-Prescription Switzerland service includes the following use cases for doct
 * Verifying E-Prescriptions
 * Revoking E-Prescriptions
 * (Partial) dispensing of E-Prescriptions
-* (temporary) locking of E-Prescriptions
+* (Temporary) locking of E-Prescriptions
 * Cancelling these actions
 
 ### 1.2. Integration of the E-Prescription Switzerland service
