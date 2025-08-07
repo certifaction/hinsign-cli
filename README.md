@@ -74,11 +74,7 @@ Example:
 &i=Firstname%Lastname%20%28HIN%20eID%29&t=1637579060&s=74331de34a747ea1a786dc369be50ac7bf222dde9788d8a170df8b6f593f1e8306eea7a79bcbfe9ae843308b1f860653886de77629cf1ae040537bfe817edd3601
 ```
 
-### 2.3. Key management
-
-An ECDSA key is used for the signature. It is stored and managed on a secure access-controlled server. The key can be rotated or renewed if necessary. To ensure that past E-Prescriptions remain valid during and after a rotation, a list of all valid keys is kept.
-
-### 2.4. Audit log
+### 2.3. Audit log
 
 Every action triggers an entry in a HIN E-Prescription audit log. It contains the following information:
 
@@ -89,11 +85,10 @@ Every action triggers an entry in a HIN E-Prescription audit log. It contains th
 * Actor (user identity)
 * Timestamp of action
 
-The audit log should ensure that the use of the service is transparent. The audit log can also be used to identify and correct any misuse. The corrections can be done in bulk. However, they are limited to the revoking of wrongly issued E-Prescriptions.
-
+The audit log ensures a transparent use of the service. The audit log may also be used to identify and correct any misuse.
 The audit log does not contain any E-Prescription data, with the exception of its ID.
 
-### 2.5. Rules
+### 2.4. Rules
 
 | Action   | Rules                                                                                                                                                                                                                                                                                                      |
 |:---------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -106,11 +101,11 @@ The audit log does not contain any E-Prescription data, with the exception of it
 | Unlock   | CHMED16A E-Prescription must exist, must be locked and must not be revoked.                                                                                                                                                                                                                                        |
 
 
-### 2.6. Events
+### 2.5. Events
 
 Events record the lifecycle of an E-Prescription. 
 
-#### 2.6.1. Event types
+#### 2.5.1. Event types
 
 <table>
   <tr>
@@ -147,7 +142,7 @@ Events record the lifecycle of an E-Prescription.
   </tr>
 </table>
 
-#### 2.6.2. Event data
+#### 2.5.2. Event data
 
 Revocations, (partial) dispensations and cancellations contain the following data:
 
@@ -425,7 +420,7 @@ POST /ePrescription/create
 Generate a signed E-Prescription QR code from a valid input JSON document in the body.  The available output formats are the following:
 
 * a QR Code image binary data in PNG format, or
-* the signed QR Code data as string
+* the signed QR Code data as json string
 
 **Authenticated**<br>
 Yes
@@ -711,7 +706,7 @@ Yes
 
 
 **Request Body**<br>
-The request body optionally contains a list of Medicament dispensation to record a partial dispensation.
+The request body optionally contains a list of Medicament dispenses to record a partial dispense.
 
 The input consists of the following fields:
 
